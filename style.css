@@ -443,6 +443,55 @@ body{background:var(--bg-deep);color:var(--text-primary);font-family:'Crimson Pr
 .ctab-panel{display:none;animation:fadeIn 0.22s ease;}
 .ctab-panel.active{display:block;}
 
+/* ─────────────────── SHIKIGAMI ─────────────────── */
+.shikigami-list{display:flex;flex-direction:column;gap:0.85rem;margin-bottom:1.5rem;}
+.shikigami-card{background:var(--bg-card);border:1px solid var(--border-faint);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition-slow);animation:fadeIn 0.28s ease;}
+.shikigami-card:hover{border-color:var(--accent-glow);box-shadow:var(--shadow-glow);}
+.shikigami-header{display:flex;align-items:center;gap:0.85rem;padding:1rem;cursor:pointer;background:var(--bg-surface);transition:var(--transition);}
+.shikigami-header:hover{background:rgba(255,255,255,0.02);}
+.shikigami-toggle{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent-glow);color:var(--accent);font-size:0.7rem;transition:var(--transition);flex-shrink:0;}
+.shikigami-card.expanded .shikigami-toggle{transform:rotate(180deg);}
+.shikigami-photo{width:64px;height:64px;border-radius:var(--radius-md);overflow:hidden;flex-shrink:0;background:var(--bg-input);border:1px solid var(--border-faint);display:flex;align-items:center;justify-content:center;}
+.shikigami-photo img{width:100%;height:100%;object-fit:cover;}
+.shikigami-photo-empty{font-size:1.8rem;color:var(--text-muted);opacity:0.3;}
+.shikigami-info{flex:1;}
+.shikigami-name{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--text-accent);letter-spacing:0.05em;margin-bottom:0.2rem;}
+.shikigami-meta{font-size:0.68rem;color:var(--gold);margin-bottom:0.15rem;}
+.shikigami-status{font-size:0.62rem;color:var(--text-muted);}
+.shikigami-details{display:none;padding:1.2rem;border-top:1px solid var(--border-faint);background:var(--bg-deep);}
+.shikigami-card.expanded .shikigami-details{display:block;}
+
+.shikigami-details-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.25rem;}
+.shikigami-info-block{background:var(--bg-card);border:1px solid var(--border-faint);border-radius:var(--radius-md);padding:0.9rem;}
+.shikigami-info-block-title{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--text-accent);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border-faint);}
+.shikigami-info-row{display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;font-size:0.75rem;}
+.shikigami-info-row .label{color:var(--text-secondary);}
+.shikigami-info-row .value{color:var(--text-primary);font-family:'Cinzel',serif;}
+
+.shikigami-attrs{display:grid;grid-template-columns:repeat(6,1fr);gap:0.5rem;margin-bottom:1.25rem;}
+.shikigami-attr-card{background:var(--bg-card);border:1px solid var(--border-faint);border-radius:var(--radius-md);padding:0.55rem;text-align:center;}
+.shikigami-attr-name{font-family:'Cinzel',serif;font-size:0.52rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.2rem;}
+.shikigami-attr-value{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold);font-weight:700;margin-bottom:0.1rem;}
+.shikigami-attr-mod{font-size:0.65rem;color:var(--accent);}
+
+.shikigami-resources{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+.shikigami-resource-card{background:var(--bg-card);border:1px solid var(--border-faint);border-radius:var(--radius-md);padding:0.9rem;}
+.shikigami-resource-card.pv{border-top:2px solid #e83040;}
+.shikigami-resource-card.pe{border-top:2px solid var(--accent2);}
+.shikigami-resource-header{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;}
+.shikigami-resource-bar{height:6px;background:var(--bg-input);border-radius:3px;overflow:hidden;border:1px solid var(--border-faint);margin-bottom:0.35rem;}
+.shikigami-resource-fill{height:100%;border-radius:3px;transition:width 0.3s ease;}
+.shikigami-resource-fill.pv{background:linear-gradient(90deg,#b82020,#e83040);}
+.shikigami-resource-fill.pe{background:linear-gradient(90deg,var(--accent-dim),var(--accent));}
+.shikigami-resource-values{display:flex;justify-content:space-between;align-items:center;font-family:'Cinzel',serif;font-size:0.75rem;color:var(--text-primary);}
+.shikigami-resource-values .res-btn{width:20px;height:20px;padding:0px;font-size:0.7rem;margin:0 0.2rem;}
+
+
+.shikigami-buttons{display:flex;gap:0.5rem;}
+.shikigami-edit-btn,.shikigami-delete-btn{flex:1;padding:0.45rem;background:rgba(255,255,255,0.03);border:1px solid var(--border-faint);border-radius:var(--radius-sm);font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.06em;color:var(--text-secondary);cursor:pointer;transition:var(--transition);}
+.shikigami-edit-btn:hover{border-color:var(--accent);color:var(--text-primary);}
+.shikigami-delete-btn:hover{border-color:var(--accent);color:var(--accent);}
+
 /* ─────────────────── TOAST ─────────────────── */
 .toast{position:fixed;bottom:1.75rem;right:1.75rem;background:var(--bg-card);border:1px solid var(--accent);border-radius:var(--radius-md);color:var(--text-accent);padding:0.6rem 1.1rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.08em;box-shadow:var(--shadow-glow-strong);opacity:0;transform:translateY(10px);transition:opacity 0.3s ease,transform 0.3s ease;pointer-events:none;z-index:2000;}
 .toast.show{opacity:1;transform:translateY(0);}
