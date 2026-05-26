@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feiticeiros & Maldições</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+</head>
+<body class="theme-default">
+
+<!-- ══════════════════════════════════════════════
+     MODAL DE PERSONALIZAÇÃO DE TEMA
+══════════════════════════════════════════════ -->
+<div class="theme-modal-overlay hidden" id="theme-modal-overlay">
+  <div class="theme-modal">
+    <div class="theme-modal-header">
+      <span class="theme-modal-title">✦ Personalize seu cantinho</span>
+      <button class="theme-modal-close" id="theme-modal-close">✕</button>
+    </div>
+    <div class="theme-grid">
+      <div class="theme-card" data-theme="theme-default">
+        <div class="theme-preview tp-default">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="theme-name">Jujutsu</div>
+        <div class="theme-desc">Dark fantasy amaldiçoado</div>
+      </div>
+      <div class="theme-card" data-theme="theme-pink">
+        <div class="theme-preview tp-pink">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="theme-name">Piti Piti</div>
+        <div class="theme-desc">Dark pink aesthetic elegante</div>
+      </div>
+      <div class="theme-card" data-theme="theme-cyber">
+        <div class="theme-preview tp-cyber">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="theme-name">Cyberpunk</div>
+        <div class="theme-desc">Neon futurista hacker</div>
+      </div>
+      <div class="theme-card" data-theme="theme-gray">
+        <div class="theme-preview tp-gray">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="theme-name">Cinzento</div>
+        <div class="theme-desc">Minimalista elegante clean</div>
+      </div>
+      <div class="theme-card" data-theme="theme-docinho">
+        <div class="theme-preview tp-docinho">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="theme-name">Docinho</div>
+        <div class="theme-desc">Vintage soft aconchegante</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     TELA INICIAL (HOME)
+══════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Partículas de fundo -->
+  <div class="home-bg">
+    <div class="bg-symbol s1">呪</div>
+    <div class="bg-symbol s2">術</div>
+    <div class="bg-symbol s3">廻</div>
+    <div class="bg-symbol s4">戦</div>
+    <div class="bg-symbol s5">呪</div>
+    <div class="bg-particles" id="bg-particles"></div>
+    <div class="bg-energy"></div>
+  </div>
+
+  <!-- Botão personalizar tema -->
+  <button class="theme-btn" id="theme-btn">Personalize seu cantinho</button>
+
+  <!-- Conteúdo central -->
+  <div class="home-content">
+    <div class="home-logo-area">
+      <!-- Símbolo da escola -->
+      <div class="jjk-symbol">
+        <img src="imagens/escolasimb.png" alt="Símbolo da Escola" />
+      </div>
+
+      <h1 class="home-title">
+        <span class="title-line1">Feiticeiros</span>
+        <span class="title-amp">&</span>
+        <span class="title-line2">Maldições</span>
+      </h1>
+      <p class="home-subtitle">Sistema de RPG · Livro de Regras v2.5</p>
+    </div>
+
+    <!-- Menu principal -->
+    <nav class="home-menu">
+      <button class="menu-btn" data-page="page-feiticeiros-lista">
+        <span class="menu-btn-icon"></span>
+        <span class="menu-btn-text">
+          <span class="menu-btn-title">Ver Feiticeiros</span>
+          <span class="menu-btn-sub">Fichas criadas</span>
+        </span>
+      </button>
+      <button class="menu-btn menu-btn-primary" data-page="page-ficha" data-action="new-char">
+        <span class="menu-btn-icon"></span>
+        <span class="menu-btn-text">
+          <span class="menu-btn-title">Criar Feiticeiro</span>
+          <span class="menu-btn-sub">Nova ficha de personagem</span>
+        </span>
+      </button>
+      <button class="menu-btn menu-btn-red" data-page="page-maldicao-form" data-action="new-maldicao">
+        <span class="menu-btn-icon"></span>
+        <span class="menu-btn-text">
+          <span class="menu-btn-title">Criar Maldição</span>
+          <span class="menu-btn-sub">Nova entidade amaldiçoada</span>
+        </span>
+      </button>
+      <button class="menu-btn" data-page="page-maldicoes-lista">
+        <span class="menu-btn-icon"></span>
+        <span class="menu-btn-text">
+          <span class="menu-btn-title">Ver Maldições</span>
+          <span class="menu-btn-sub">Entidades criadas</span>
+        </span>
+      </button>
+      <button class="menu-btn" data-page="page-campanhas">
+        <span class="menu-btn-icon"></span>
+        <span class="menu-btn-text">
+          <span class="menu-btn-title">Campanhas</span>
+          <span class="menu-btn-sub">Criar e gerenciar</span>
+        </span>
+      </button>
+    </nav>
+  </div>
+
+  <footer class="home-footer">Feito por Stephany</footer>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PÁGINA: VER FEITICEIROS
+══════════════════════════════════════════════ -->
+<div id="page-feiticeiros-lista" class="page">
+  <div class="page-topbar">
+    <button class="back-btn" data-page="page-home">← Voltar</button>
+    <h2 class="page-topbar-title">Feiticeiros</h2>
+    <button class="btn-add-top" data-page="page-ficha" data-action="new-char">+ Novo Feiticeiro</button>
+  </div>
+  <div class="lista-container" id="lista-feiticeiros">
+    <div class="lista-empty" id="empty-feiticeiros">Nenhum feiticeiro registrado ainda.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PÁGINA: FICHA DE FEITICEIRO (existente + melhorada)
+══════════════════════════════════════════════ -->
+<div id="page-ficha" class="page">
+  <div class="page-topbar">
+    <button class="back-btn" data-page="page-feiticeiros-lista">← Voltar</button>
+    <h2 class="page-topbar-title">Ficha de Feiticeiro</h2>
+    <div style="display:flex;gap:0.5rem;">
+      <button class="btn-save-char" id="btn-save-char">Salvar</button>
+      <button class="btn-export-char" id="btn-export-char">⬇ Exportar</button>
+      <button class="btn-import-char" id="btn-import-trigger">⬆ Importar</button>
+      <input type="file" id="btn-import-char" accept=".json" style="display:none"/>
+    </div>
+  </div>
+
+  <!-- sidebar + conteúdo da ficha -->
+  <div class="ficha-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-symbol">呪</div>
+        <div class="sidebar-title">
+          <span class="title-top">Feiticeiros</span>
+          <span class="title-amp">&amp;</span>
+          <span class="title-bot">Maldições</span>
+        </div>
+      </div>
+      <div class="sidebar-portrait">
+        <label class="portrait-label" for="portrait-upload">
+          <img id="portrait-preview" src="" alt="" style="display:none;" />
+          <div class="portrait-placeholder" id="portrait-placeholder">
+            <span class="portrait-icon">⛧</span>
+            <span class="portrait-hint">Foto do Personagem</span>
+          </div>
+          <div class="portrait-overlay">Trocar</div>
+        </label>
+        <input type="file" id="portrait-upload" accept="image/*" style="display:none;" />
+      </div>
+      <div class="sidebar-name-display" id="sidebar-name">— sem nome —</div>
+      <div class="sidebar-level-display" id="sidebar-level">Nível 1 · Grau IV</div>
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-tab="geral"><span class="nav-icon">◈</span><span>Informações Gerais</span></button>
+        <button class="nav-btn" data-tab="atributos"><span class="nav-icon">⬡</span><span>Atributos</span></button>
+        <button class="nav-btn" data-tab="origem"><span class="nav-icon">⚜</span><span>Origem</span></button>
+        <button class="nav-btn" data-tab="especializacao"><span class="nav-icon">✦</span><span>Especialização</span></button>
+        <button class="nav-btn" data-tab="tecnicas"><span class="nav-icon">◉</span><span>Técnicas e Feitiços</span></button>
+        <button class="nav-btn" data-tab="combate"><span class="nav-icon">⚔</span><span>Combate</span></button>
+        <button class="nav-btn" data-tab="inventario"><span class="nav-icon">⬖</span><span>Inventário</span></button>
+        <button class="nav-btn" data-tab="anotacoes"><span class="nav-icon">✎</span><span>Anotações</span></button>
+        <button class="nav-btn" data-tab="status"><span class="nav-icon">◎</span><span>Status</span></button>
+      </nav>
+      <div class="sidebar-actions">
+        <button class="btn-action btn-danger" id="btn-reset">✕ Resetar</button>
+      </div>
+      <div class="save-indicator" id="save-indicator">Auto-salvo</div>
+    </aside>
+
+    <main class="main-content">
+      <!-- ABA: INFORMAÇÕES GERAIS -->
+      <section class="tab-panel active" id="tab-geral">
+        <div class="panel-header"><h2 class="panel-title">Informações Gerais</h2><p class="panel-subtitle">Aspectos pessoais e identidade do personagem</p></div>
+        <div class="info-grid">
+          <div class="form-group span-2"><label class="form-label">Nome do Personagem</label><input class="form-input" id="nome" type="text" placeholder="Nome do seu feiticeiro..." data-save="nome" /></div>
+          <div class="form-group"><label class="form-label">Idade</label><input class="form-input" id="idade" type="text" placeholder="Ex: 17" data-save="idade" /></div>
+          <div class="form-group"><label class="form-label">Altura</label><input class="form-input" id="altura" type="text" placeholder="Ex: 1,75m" data-save="altura" /></div>
+          <div class="form-group"><label class="form-label">Peso</label><input class="form-input" id="peso" type="text" placeholder="Ex: 70kg" data-save="peso" /></div>
+          <div class="form-group"><label class="form-label">Nível</label><input class="form-input" id="nivel" type="number" min="1" max="20" value="1" data-save="nivel" /></div>
+          <div class="form-group"><label class="form-label">Grau</label>
+            <select class="form-select" id="grau" data-save="grau">
+              <option value="IV">IV Grau (Nível 1–4)</option>
+              <option value="III">III Grau (Nível 5–7)</option>
+              <option value="II">II Grau (Nível 8–13)</option>
+              <option value="I">I Grau (Nível 14–18)</option>
+              <option value="Especial">Especial (Nível 19–20)</option>
+            </select>
+          </div>
+        </div>
+        <div class="aspects-grid">
+          <div class="aspect-card"><div class="aspect-icon">▶</div><label class="form-label">Aparência</label><textarea class="form-textarea" id="aparencia" placeholder="Descreva a aparência física..." data-save="aparencia" rows="3"></textarea></div>
+          <div class="aspect-card"><div class="aspect-icon">▶</div><label class="form-label">Personalidade</label><textarea class="form-textarea" id="personalidade" placeholder="Como pensa, sente e se comporta..." data-save="personalidade" rows="3"></textarea></div>
+          <div class="aspect-card"><div class="aspect-icon">▶</div><label class="form-label">Ideais</label><textarea class="form-textarea" id="ideais" placeholder="Princípios e valores..." data-save="ideais" rows="3"></textarea></div>
+          <div class="aspect-card"><div class="aspect-icon">▶</div><label class="form-label">Ligações</label><textarea class="form-textarea" id="ligacoes" placeholder="Conexões e laços..." data-save="ligacoes" rows="3"></textarea></div>
+          <div class="aspect-card"><div class="aspect-icon">▶</div><label class="form-label">Complicações</label><textarea class="form-textarea" id="complicacoes" placeholder="Fraquezas e pontos de fragilidade..." data-save="complicacoes" rows="3"></textarea></div>
+          <div class="aspect-card aspect-featured"><div class="aspect-icon">▶</div><label class="form-label">Domínio Inato</label><textarea class="form-textarea" id="dominio" placeholder="O espaço interior do personagem..." data-save="dominio" rows="3"></textarea></div>
+        </div>
+      </section>
+
+      <!-- ABA: ATRIBUTOS -->
+      <section class="tab-panel" id="tab-atributos">
+        <div class="panel-header"><h2 class="panel-title">Atributos</h2><p class="panel-subtitle">Os seis pilares do seu personagem · Máximo padrão: 20</p></div>
+        <div class="attr-grid">
+          <div class="attr-card" data-attr="forca"><div class="attr-name">Força</div><div class="attr-abbr">FOR</div><div class="attr-controls"><button class="attr-btn attr-minus" data-attr="forca">−</button><input class="attr-value" id="attr-forca" type="number" min="1" max="30" value="10" data-save="attr-forca" /><button class="attr-btn attr-plus" data-attr="forca">+</button></div><div class="attr-mod-display" id="mod-forca">+0</div><div class="attr-mod-label">Modificador</div><div class="attr-desc">Poder muscular e bruto</div></div>
+          <div class="attr-card" data-attr="destreza"><div class="attr-name">Destreza</div><div class="attr-abbr">DES</div><div class="attr-controls"><button class="attr-btn attr-minus" data-attr="destreza">−</button><input class="attr-value" id="attr-destreza" type="number" min="1" max="30" value="10" data-save="attr-destreza" /><button class="attr-btn attr-plus" data-attr="destreza">+</button></div><div class="attr-mod-display" id="mod-destreza">+0</div><div class="attr-mod-label">Modificador</div><div class="attr-desc">Agilidade e reflexos</div></div>
+          <div class="attr-card" data-attr="constituicao"><div class="attr-name">Constituição</div><div class="attr-abbr">CON</div><div class="attr-controls"><button class="attr-btn attr-minus" data-attr="constituicao">−</button><input class="attr-value" id="attr-constituicao" type="number" min="1" max="30" value="10" data-save="attr-constituicao" /><button class="attr-btn attr-plus" data-attr="constituicao">+</button></div><div class="attr-mod-display" id="mod-constituicao">+0</div><div class="attr-mod-label">Modificador</div><div class="attr-desc">Resistência e vigor</div></div>
+          <div class="attr-card" data-attr="inteligencia"><div class="attr-name">Inteligência</div><div class="attr-abbr">INT</div><div class="attr-controls"><button class="attr-btn attr-minus" data-attr="inteligencia">−</button><input class="attr-value" id="attr-inteligencia" type="number" min="1" max="30" value="10" data-save="attr-inteligencia" /><button class="attr-btn attr-plus" data-attr="inteligencia">+</button></div><div class="attr-mod-display" id="mod-inteligencia">+0</div><div class="attr-mod-label">Modificador</div><div class="attr-desc">Raciocínio e intelecto</div></div>
+          <div class="attr-card" data-attr="sabedoria"><div class="attr-name">Sabedoria</div><div class="attr-abbr">SAB</div><div class="attr-controls"><button class="attr-btn attr-minus" data-attr="sabedoria">−</button><input class="attr-value" id="attr-sabedoria" type="number" min="1" max="30" value="10" data-save="attr-sabedoria" /><button class="attr-btn attr-plus" data-attr="sabedoria">+</button></div><div class="attr-mod-display" id="mod-sabedoria">+0</div><div class="attr-mod-label">Modificador</div><div class="attr-desc">Conhecimento e observação</div></div>
+          <div class="attr-card" data-attr="presenca"><div class="attr-name">Presença</div><div class="attr-abbr">PRE</div><div class="attr-controls"><button class="attr-btn attr-minus" data-attr="presenca">−</button><input class="attr-value" id="attr-presenca" type="number" min="1" max="30" value="10" data-save="attr-presenca" /><button class="attr-btn attr-plus" data-attr="presenca">+</button></div><div class="attr-mod-display" id="mod-presenca">+0</div><div class="attr-mod-label">Modificador</div><div class="attr-desc">Força de personalidade</div></div>
+        </div>
+        <div class="panel-header" style="margin-top:2rem;"><h3 class="panel-title" style="font-size:1.1rem;">Valores Calculados</h3></div>
+        <div class="derived-grid">
+          <div class="derived-card"><div class="derived-icon">🛡</div><div class="derived-label">Defesa</div><div class="derived-value" id="val-defesa">10</div><div class="derived-formula">10 + Mod.DES + Nível/2</div></div>
+          <div class="derived-card"><div class="derived-icon">👁</div><div class="derived-label">Atenção</div><div class="derived-value" id="val-atencao">10</div><div class="derived-formula">10 + Bônus Percepção</div></div>
+          <div class="derived-card"><div class="derived-icon">⚡</div><div class="derived-label">Iniciativa</div><div class="derived-value" id="val-iniciativa">+0</div><div class="derived-formula">Modificador de DES</div></div>
+          <div class="derived-card"><div class="derived-icon">◎</div><div class="derived-label">Int. da Alma</div><div class="derived-value" id="val-alma">0</div><div class="derived-formula">= Máx. de PV</div></div>
+          <div class="derived-card"><div class="derived-icon">🏃</div><div class="derived-label">Deslocamento</div><div class="derived-value" id="val-deslocamento">9m</div><div class="derived-formula">Padrão 9 metros</div></div>
+          <div class="derived-card"><div class="derived-icon">⬆</div><div class="derived-label">Bôn. Treinamento</div><div class="derived-value" id="val-treinamento">+2</div><div class="derived-formula">Baseado no Nível</div></div>
+        </div>
+        <div class="extra-row"><label class="form-label">Bônus extra em Percepção</label><input class="form-input small-input" id="bonus-percepcao" type="number" value="0" data-save="bonus-percepcao" /></div>
+        <div class="extra-row"><label class="form-label">Bônus extra de Deslocamento</label><input class="form-input small-input" id="bonus-deslocamento" type="number" value="0" data-save="bonus-deslocamento" /></div>
+      </section>
+
+      <!-- ABA: ORIGEM -->
+      <section class="tab-panel" id="tab-origem">
+        <div class="panel-header"><h2 class="panel-title">Origem</h2><p class="panel-subtitle">A fonte do poder do seu personagem</p></div>
+        <div class="origin-grid" id="origin-grid">
+          <div class="origin-card" data-origin="Inato"><div class="origin-glyph">⬟</div><div class="origin-name">Inato</div><div class="origin-desc">Nasceu com energia amaldiçoada. +2 em um atributo, +1 em outro. Talento Natural e Marca Registrada.</div><div class="origin-badges"><span class="badge">+2/+1 Atributos</span><span class="badge">Talento Natural</span><span class="badge">Feitiço Extra</span></div></div>
+          <div class="origin-card" data-origin="Herdado"><div class="origin-glyph">⚜</div><div class="origin-name">Herdado</div><div class="origin-desc">Técnica proveniente da linhagem dos clãs. Bônus baseado no clã escolhido.</div><div class="origin-badges"><span class="badge">Bônus por Clã</span><span class="badge">Herança de Clã</span></div></div>
+          <div class="origin-card" data-origin="Derivado"><div class="origin-glyph">◉</div><div class="origin-name">Derivado</div><div class="origin-desc">Energia derivada de fonte alternativa. +2/+1 atributos, Energia Antinatural.</div><div class="origin-badges"><span class="badge">+2/+1 Atributos</span><span class="badge">Aptidão de Aura</span></div></div>
+          <div class="origin-card" data-origin="Restringido"><div class="origin-glyph">⛧</div><div class="origin-name">Restringido</div><div class="origin-desc">Físico extraordinário sem energia amaldiçoada. +1 FOR/DES/CON. Deslocamento +3m.</div><div class="origin-badges"><span class="badge">+1 FOR/DES/CON</span><span class="badge">Deslocamento +3m</span></div></div>
+          <div class="origin-card" data-origin="Feto Amaldiçoado Híbrido"><div class="origin-glyph">☽</div><div class="origin-name">Feto Amaldiçoado Híbrido</div><div class="origin-desc">Híbrido entre humano e maldição. +2/+1 atributos, Físico Amaldiçoado.</div><div class="origin-badges"><span class="badge">+2/+1 Atributos</span><span class="badge">Anatomia Única</span></div></div>
+        </div>
+        <div class="clan-section hidden" id="clan-section">
+          <div class="panel-header" style="margin-top:2rem;"><h3 class="panel-title" style="font-size:1.1rem;">Selecionar Clã</h3></div>
+          <div class="clan-grid" id="clan-grid">
+            <div class="clan-card" data-clan="Gojo"><div class="clan-symbol">∞</div><div class="clan-name">Clã Gojo</div><div class="clan-desc">+2 INT ou SAB. Potencial Lendário: feitiços extras.</div><div class="origin-badges"><span class="badge">+2 INT/SAB</span></div></div>
+            <div class="clan-card" data-clan="Inumaki"><div class="clan-symbol">蛇</div><div class="clan-name">Clã Inumaki</div><div class="clan-desc">+2 INT ou PRE. Olhos de Cobra.</div><div class="origin-badges"><span class="badge">+2 INT/PRE</span></div></div>
+            <div class="clan-card" data-clan="Kamo"><div class="clan-symbol">血</div><div class="clan-name">Clã Kamo</div><div class="clan-desc">+2 CON ou SAB. Valor do Sangue: +1 PV/nível.</div><div class="origin-badges"><span class="badge">+2 CON/SAB</span></div></div>
+            <div class="clan-card" data-clan="Zenin"><div class="clan-symbol">影</div><div class="clan-name">Clã Zenin</div><div class="clan-desc">+2 qualquer atributo. Feitiço Focado.</div><div class="origin-badges"><span class="badge">+2/+1 Quaisquer</span></div></div>
+          </div>
+        </div>
+        <div class="origin-selected-display hidden" id="origin-selected-display">
+          <div class="selected-title">Origem Selecionada</div>
+          <div class="selected-info" id="origin-selected-info">—</div>
+          <div class="selected-clan hidden" id="selected-clan-container">
+            <div class="selected-title" style="margin-top:1rem;">Clã</div>
+            <div class="selected-info" id="clan-selected-info">—</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: ESPECIALIZAÇÃO -->
+      <section class="tab-panel" id="tab-especializacao">
+        <div class="panel-header"><h2 class="panel-title">Especialização</h2><p class="panel-subtitle">O caminho de poder do seu personagem</p></div>
+        <div class="spec-grid" id="spec-grid">
+          <div class="spec-card" data-spec="Lutador"><div class="spec-glyph">✊</div><div class="spec-name">Lutador</div><div class="spec-pv-pe">PV: 12+CON · PE: 4/nível</div><div class="spec-desc">Combate físico e marcial.</div><div class="spec-dado">Dado de Vida: d10</div></div>
+          <div class="spec-card" data-spec="Especialista em Combate"><div class="spec-glyph">⚔</div><div class="spec-name">Esp. Combate</div><div class="spec-pv-pe">PV: 12+CON · PE: 4/nível</div><div class="spec-desc">Combate estratégico versátil.</div><div class="spec-dado">Dado de Vida: d10</div></div>
+          <div class="spec-card" data-spec="Especialista em Técnica"><div class="spec-glyph">◉</div><div class="spec-name">Esp. Técnica</div><div class="spec-pv-pe">PV: 10+CON · PE: 6+Mod/nível</div><div class="spec-desc">Domínio da energia amaldiçoada.</div><div class="spec-dado">Dado de Vida: d8</div></div>
+          <div class="spec-card" data-spec="Controlador"><div class="spec-glyph">⬡</div><div class="spec-name">Controlador</div><div class="spec-pv-pe">PV: 10+CON · PE: 5+Mod/nível</div><div class="spec-desc">Shikigamis e marionetes.</div><div class="spec-dado">Dado de Vida: d8</div></div>
+          <div class="spec-card" data-spec="Suporte"><div class="spec-glyph">✦</div><div class="spec-name">Suporte</div><div class="spec-pv-pe">PV: 10+CON · PE: 5+Mod/nível</div><div class="spec-desc">Cura e fortalecimento de aliados.</div><div class="spec-dado">Dado de Vida: d8</div></div>
+          <div class="spec-card" data-spec="Restringido"><div class="spec-glyph">⛧</div><div class="spec-name">Restringido</div><div class="spec-pv-pe">PV: 16+CON · PE: — (Estamina)</div><div class="spec-desc">Físico anormal. Exclusivo Restringido.</div><div class="spec-dado">Dado de Vida: d12</div></div>
+        </div>
+        <div class="spec-info-box hidden" id="spec-info-box">
+          <div class="spec-info-header"><div class="spec-info-icon" id="spec-info-icon">✊</div><div><div class="spec-info-name" id="spec-info-name">—</div><div class="spec-info-stats" id="spec-info-stats">—</div></div></div>
+          <div class="spec-info-details" id="spec-info-details">—</div>
+        </div>
+        <div class="extra-row" id="mod-pe-row" style="display:none;"><label class="form-label">Modificador de Atributo Chave (somado ao PE inicial)</label><input class="form-input small-input" id="mod-atributo-pe" type="number" value="0" data-save="mod-atributo-pe" /></div>
+      </section>
+
+      <!-- ABA: TÉCNICAS -->
+      <section class="tab-panel" id="tab-tecnicas">
+        <div class="panel-header"><h2 class="panel-title">Técnicas e Feitiços</h2><p class="panel-subtitle">Gerencie os poderes do personagem</p></div>
+        <div class="form-group"><label class="form-label">Nome da Técnica Inata</label><input class="form-input" id="tecnica-nome" type="text" placeholder="Ex: Proporções, Manipulação de Sangue..." data-save="tecnica-nome" /></div>
+        <div class="form-group" style="margin-top:0.75rem;"><label class="form-label">Funcionamento da Técnica</label><textarea class="form-textarea" id="tecnica-desc" placeholder="Descreva como a técnica funciona..." data-save="tecnica-desc" rows="3"></textarea></div>
+        <div class="section-action-row"><h3 class="section-subtitle">Feitiços</h3><button class="btn-add" id="btn-add-feitico">+ Novo Feitiço</button></div>
+        <div id="feiticos-list" class="item-list"></div>
+        <div class="item-form hidden" id="feitico-form">
+          <h4 class="item-form-title">Novo Feitiço</h4>
+          <div class="item-form-grid">
+            <div class="form-group span-2"><label class="form-label">Nome</label><input class="form-input" id="f-nome" type="text" placeholder="Nome do feitiço..." /></div>
+            <div class="form-group"><label class="form-label">Imagem</label><input class="form-input" id="f-img" type="file" accept="image/*" /></div>
+            <div class="form-group"><label class="form-label">Custo PE</label><input class="form-input" id="f-custo" type="number" min="0" value="1" /></div>
+            <div class="form-group"><label class="form-label">Alcance</label><input class="form-input" id="f-alcance" type="text" placeholder="Ex: 9m, Toque..." /></div>
+            <div class="form-group"><label class="form-label">Dano / Cura</label><input class="form-input" id="f-dano" type="text" placeholder="Ex: 2d8+Mod..." /></div>
+            <div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="f-tipo"><option>Dano</option><option>Auxiliar</option><option>Cura</option><option>Especial</option><option>Passivo</option></select></div>
+            <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="f-desc" rows="2"></textarea></div>
+            <div class="form-group span-2"><label class="form-label">Observações</label><input class="form-input" id="f-obs" type="text" /></div>
+          </div>
+          <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-feitico">Adicionar</button><button class="btn-cancel" id="btn-cancel-feitico">Cancelar</button></div>
+        </div>
+      </section>
+
+      <!-- ABA: COMBATE -->
+      <section class="tab-panel" id="tab-combate">
+        <div class="panel-header"><h2 class="panel-title">Combate</h2><p class="panel-subtitle">Pontos de Vida, Energia e estado em batalha</p></div>
+        <div class="resource-section">
+          <div class="resource-card pv-card"><div class="resource-header"><span class="resource-label">Pontos de Vida</span><span class="resource-tag">PV</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pv-fill" id="pv-fill" style="width:100%"></div></div></div><div class="resource-controls"><button class="res-btn res-minus" data-res="pv">−</button><div class="resource-values"><span class="res-current" id="pv-current">0</span><span class="res-sep">/</span><span class="res-max" id="pv-max">0</span></div><button class="res-btn res-plus" data-res="pv">+</button></div><div class="resource-note">Máx: <span id="pv-max-note">selecione especialização</span></div></div>
+          <div class="resource-card pe-card"><div class="resource-header"><span class="resource-label">Energia Amaldiçoada</span><span class="resource-tag">PE</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pe-fill" id="pe-fill" style="width:100%"></div></div></div><div class="resource-controls"><button class="res-btn res-minus" data-res="pe">−</button><div class="resource-values"><span class="res-current" id="pe-current">0</span><span class="res-sep">/</span><span class="res-max" id="pe-max">0</span></div><button class="res-btn res-plus" data-res="pe">+</button></div><div class="resource-note">Máx: <span id="pe-max-note">selecione especialização</span></div></div>
+          <div class="resource-card alma-card"><div class="resource-header"><span class="resource-label">Integridade da Alma</span><span class="resource-tag">IA</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill alma-fill" id="alma-fill" style="width:100%"></div></div></div><div class="resource-controls"><button class="res-btn res-minus" data-res="alma">−</button><div class="resource-values"><span class="res-current" id="alma-current">0</span><span class="res-sep">/</span><span class="res-max" id="alma-max">0</span></div><button class="res-btn res-plus" data-res="alma">+</button></div><div class="resource-note">Igual ao máximo de PV</div></div>
+        </div>
+        <div class="combat-stats-grid">
+          <div class="cs-card"><div class="cs-label">DEF</div><div class="cs-value" id="cs-defesa">10</div></div>
+          <div class="cs-card"><div class="cs-label">Iniciativa</div><div class="cs-value" id="cs-iniciativa">+0</div></div>
+          <div class="cs-card"><div class="cs-label">Atenção</div><div class="cs-value" id="cs-atencao">10</div></div>
+          <div class="cs-card"><div class="cs-label">Deslocamento</div><div class="cs-value" id="cs-deslocamento">9m</div></div>
+          <div class="cs-card"><div class="cs-label">Bôn. Treino</div><div class="cs-value" id="cs-treinamento">+2</div></div>
+          <div class="cs-card"><div class="cs-label">Dado de Vida</div><div class="cs-value" id="cs-dv">—</div></div>
+        </div>
+        <div class="section-action-row"><h3 class="section-subtitle">Condições Ativas</h3></div>
+        <div class="conditions-grid" id="conditions-grid"></div>
+      </section>
+
+      <!-- ABA: INVENTÁRIO -->
+      <section class="tab-panel" id="tab-inventario">
+        <div class="panel-header"><h2 class="panel-title">Inventário</h2><p class="panel-subtitle">Equipamentos e itens carregados</p></div>
+        <div class="section-action-row"><h3 class="section-subtitle">Itens</h3><button class="btn-add" id="btn-add-item">+ Novo Item</button></div>
+        <div id="itens-list" class="item-list"></div>
+        <div class="item-form hidden" id="item-form">
+          <h4 class="item-form-title">Novo Item</h4>
+          <div class="item-form-grid">
+            <div class="form-group span-2"><label class="form-label">Nome</label><input class="form-input" id="i-nome" type="text" /></div>
+            <div class="form-group"><label class="form-label">Imagem</label><input class="form-input" id="i-img" type="file" accept="image/*" /></div>
+            <div class="form-group"><label class="form-label">Categoria</label><select class="form-select" id="i-categoria"><option>Arma</option><option>Uniforme / Armadura</option><option>Escudo</option><option>Item Especial</option><option>Ferramenta Amaldiçoada</option><option>Kit de Ferramentas</option><option>Consumível</option><option>Outro</option></select></div>
+            <div class="form-group"><label class="form-label">Quantidade</label><input class="form-input" id="i-qtd" type="number" min="1" value="1" /></div>
+            <div class="form-group"><label class="form-label">Espaços</label><input class="form-input" id="i-peso" type="number" min="0" step="0.1" value="0" /></div>
+            <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="i-desc" rows="2"></textarea></div>
+          </div>
+          <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-item">Adicionar</button><button class="btn-cancel" id="btn-cancel-item">Cancelar</button></div>
+        </div>
+        <div class="weight-display"><span class="weight-label">Espaços Ocupados:</span><span class="weight-value" id="total-weight">0 </span></div>
+      </section>
+
+      <!-- ABA: ANOTAÇÕES -->
+      <section class="tab-panel" id="tab-anotacoes">
+        <div class="panel-header"><h2 class="panel-title">Anotações</h2><p class="panel-subtitle">Notas livres, missões e informações da campanha</p></div>
+        <div class="form-group"><label class="form-label">Anotações da Campanha</label><textarea class="form-textarea" id="anotacoes-campanha" data-save="anotacoes-campanha" placeholder="Eventos importantes, locais visitados, NPCs..." rows="8"></textarea></div>
+        <div class="form-group" style="margin-top:1rem;"><label class="form-label">Objetivos e Missões</label><textarea class="form-textarea" id="anotacoes-missoes" data-save="anotacoes-missoes" placeholder="Missões ativas, metas pessoais..." rows="5"></textarea></div>
+        <div class="form-group" style="margin-top:1rem;"><label class="form-label">Notas de Combate</label><textarea class="form-textarea" id="anotacoes-combate" data-save="anotacoes-combate" placeholder="Estratégias, combos, fraquezas de inimigos..." rows="5"></textarea></div>
+      </section>
+
+      <!-- ABA: STATUS -->
+      <section class="tab-panel" id="tab-status">
+        <div class="panel-header"><h2 class="panel-title">Status</h2><p class="panel-subtitle">Visão geral completa do personagem</p></div>
+        <div class="status-overview">
+          <div class="status-block"><div class="status-block-title">⬟ Identidade</div><div class="status-row"><span>Nome</span><span id="st-nome">—</span></div><div class="status-row"><span>Nível</span><span id="st-nivel">1</span></div><div class="status-row"><span>Grau</span><span id="st-grau">IV</span></div><div class="status-row"><span>Origem</span><span id="st-origem">—</span></div><div class="status-row"><span>Especialização</span><span id="st-spec">—</span></div></div>
+          <div class="status-block"><div class="status-block-title">⬡ Atributos</div><div class="status-row"><span>Força</span><span id="st-forca">10 (+0)</span></div><div class="status-row"><span>Destreza</span><span id="st-destreza">10 (+0)</span></div><div class="status-row"><span>Constituição</span><span id="st-constituicao">10 (+0)</span></div><div class="status-row"><span>Inteligência</span><span id="st-inteligencia">10 (+0)</span></div><div class="status-row"><span>Sabedoria</span><span id="st-sabedoria">10 (+0)</span></div><div class="status-row"><span>Presença</span><span id="st-presenca">10 (+0)</span></div></div>
+          <div class="status-block"><div class="status-block-title">⚔ Combate</div><div class="status-row"><span>PV Máx.</span><span id="st-pv">0</span></div><div class="status-row"><span>PE Máx.</span><span id="st-pe">0</span></div><div class="status-row"><span>Defesa</span><span id="st-def">10</span></div><div class="status-row"><span>Iniciativa</span><span id="st-init">+0</span></div><div class="status-row"><span>Deslocamento</span><span id="st-desl">9m</span></div><div class="status-row"><span>Int. da Alma</span><span id="st-alma">0</span></div></div>
+          <div class="status-block"><div class="status-block-title">◉ Técnica</div><div class="status-row"><span>Técnica Inata</span><span id="st-tecnica">—</span></div><div class="status-row"><span>Feitiços</span><span id="st-feiticos">0</span></div><div class="status-row"><span>Itens</span><span id="st-itens">0</span></div><div class="status-row"><span>Bôn. Treino</span><span id="st-treino">+2</span></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PÁGINA: VER MALDIÇÕES
+══════════════════════════════════════════════ -->
+<div id="page-maldicoes-lista" class="page">
+  <div class="page-topbar">
+    <button class="back-btn" data-page="page-home">← Voltar</button>
+    <h2 class="page-topbar-title">👁 Maldições</h2>
+    <button class="btn-add-top" data-page="page-maldicao-form" data-action="new-maldicao">+ Nova Maldição</button>
+  </div>
+  <div class="lista-container" id="lista-maldicoes">
+    <div class="lista-empty" id="empty-maldicoes">Nenhuma maldição registrada ainda.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PÁGINA: CRIAR MALDIÇÃO
+══════════════════════════════════════════════ -->
+<div id="page-maldicao-form" class="page">
+  <div class="page-topbar">
+    <button class="back-btn" data-page="page-maldicoes-lista">← Voltar</button>
+    <h2 class="page-topbar-title">☠ Ficha de Maldição</h2>
+    <button class="btn-save-char" id="btn-save-maldicao">💾 Salvar Maldição</button>
+  </div>
+  <div class="ficha-layout">
+    <aside class="sidebar sidebar-red">
+      <div class="sidebar-logo">
+        <div class="sidebar-symbol" style="color:var(--accent);">☠</div>
+        <div class="sidebar-title"><span class="title-top">Maldição</span><span class="title-amp">&amp;</span><span class="title-bot">Amaldiçoada</span></div>
+      </div>
+      <div class="sidebar-portrait">
+        <label class="portrait-label" for="m-portrait-upload">
+          <img id="m-portrait-preview" src="" alt="" style="display:none;" />
+          <div class="portrait-placeholder" id="m-portrait-placeholder"><span class="portrait-icon">☠</span><span class="portrait-hint">Imagem da Maldição</span></div>
+          <div class="portrait-overlay">Trocar</div>
+        </label>
+        <input type="file" id="m-portrait-upload" accept="image/*" style="display:none;" />
+      </div>
+      <div class="sidebar-name-display" id="m-sidebar-name">— sem nome —</div>
+      <div class="sidebar-level-display" id="m-sidebar-level">Grau Especial</div>
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-mtab="m-info"><span class="nav-icon">◈</span><span>Informações</span></button>
+        <button class="nav-btn" data-mtab="m-atributos"><span class="nav-icon">⬡</span><span>Atributos</span></button>
+        <button class="nav-btn" data-mtab="m-tecnicas"><span class="nav-icon">◉</span><span>Técnicas</span></button>
+        <button class="nav-btn" data-mtab="m-resistencias"><span class="nav-icon">🛡</span><span>Resistências</span></button>
+        <button class="nav-btn" data-mtab="m-acoes"><span class="nav-icon">⚔</span><span>Ações</span></button>
+        <button class="nav-btn" data-mtab="m-status"><span class="nav-icon">◎</span><span>Status</span></button>
+        <button class="nav-btn" data-mtab="m-anotacoes"><span class="nav-icon">✎</span><span>Anotações</span></button>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <!-- Info -->
+      <section class="tab-panel active" id="tab-m-info">
+        <div class="panel-header"><h2 class="panel-title">Informações da Maldição</h2><p class="panel-subtitle">Identidade e natureza da entidade</p></div>
+        <div class="info-grid">
+          <div class="form-group span-2"><label class="form-label">Nome da Maldição</label><input class="form-input" id="m-nome" type="text" placeholder="Nome da maldição..." data-msave="m-nome" /></div>
+          <div class="form-group"><label class="form-label">Grau</label>
+            <select class="form-select" id="m-grau" data-msave="m-grau">
+              <option>Grau 4</option><option>Grau 3</option><option>Grau 2</option>
+              <option>Grau 1</option><option>Grau Especial</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Tipo</label>
+            <select class="form-select" id="m-tipo" data-msave="m-tipo">
+              <option>Maldição</option><option>Espírito Amaldiçoado</option><option>Semi-Maldição</option><option>Híbrido</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Ameaça</label>
+            <select class="form-select" id="m-ameaca" data-msave="m-ameaca">
+              <option>Baixa</option><option>Média</option><option>Alta</option><option>Extrema</option><option>Catastrófica</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Inteligência</label>
+            <select class="form-select" id="m-inteligencia-nivel" data-msave="m-inteligencia-nivel">
+              <option>Instintiva</option><option>Básica</option><option>Moderada</option><option>Alta</option><option>Genial</option>
+            </select>
+          </div>
+        </div>
+        <div class="aspects-grid">
+          <div class="aspect-card"><div class="aspect-icon">☠</div><label class="form-label">Aparência / Forma</label><textarea class="form-textarea" id="m-aparencia" data-msave="m-aparencia" placeholder="Como é a forma física da maldição..." rows="3"></textarea></div>
+          <div class="aspect-card"><div class="aspect-icon">⚡</div><label class="form-label">Comportamento</label><textarea class="form-textarea" id="m-comportamento" data-msave="m-comportamento" placeholder="Como age, caça e se comunica..." rows="3"></textarea></div>
+          <div class="aspect-card"><div class="aspect-icon">◉</div><label class="form-label">Origem da Maldição</label><textarea class="form-textarea" id="m-origem" data-msave="m-origem" placeholder="O que gerou esta maldição..." rows="3"></textarea></div>
+          <div class="aspect-card aspect-featured"><div class="aspect-icon">⬟</div><label class="form-label">Domínio / Território</label><textarea class="form-textarea" id="m-dominio" data-msave="m-dominio" placeholder="Onde habita, domínio expandido..." rows="3"></textarea></div>
+        </div>
+      </section>
+      <!-- Atributos maldição -->
+      <section class="tab-panel" id="tab-m-atributos">
+        <div class="panel-header"><h2 class="panel-title">Atributos</h2><p class="panel-subtitle">Poder, resistência e características da maldição</p></div>
+        <div class="attr-grid">
+          <div class="attr-card"><div class="attr-name">Força</div><div class="attr-abbr">FOR</div><div class="attr-controls"><button class="attr-btn attr-minus" data-mattr="m-forca">−</button><input class="attr-value" id="m-attr-forca" type="number" min="1" max="30" value="12" data-msave="m-forca" /><button class="attr-btn attr-plus" data-mattr="m-forca">+</button></div><div class="attr-mod-display" id="m-mod-forca">+1</div><div class="attr-mod-label">Modificador</div></div>
+          <div class="attr-card"><div class="attr-name">Destreza</div><div class="attr-abbr">DES</div><div class="attr-controls"><button class="attr-btn attr-minus" data-mattr="m-destreza">−</button><input class="attr-value" id="m-attr-destreza" type="number" min="1" max="30" value="10" data-msave="m-destreza" /><button class="attr-btn attr-plus" data-mattr="m-destreza">+</button></div><div class="attr-mod-display" id="m-mod-destreza">+0</div><div class="attr-mod-label">Modificador</div></div>
+          <div class="attr-card"><div class="attr-name">Constituição</div><div class="attr-abbr">CON</div><div class="attr-controls"><button class="attr-btn attr-minus" data-mattr="m-constituicao">−</button><input class="attr-value" id="m-attr-constituicao" type="number" min="1" max="30" value="14" data-msave="m-constituicao" /><button class="attr-btn attr-plus" data-mattr="m-constituicao">+</button></div><div class="attr-mod-display" id="m-mod-constituicao">+2</div><div class="attr-mod-label">Modificador</div></div>
+          <div class="attr-card"><div class="attr-name">Inteligência</div><div class="attr-abbr">INT</div><div class="attr-controls"><button class="attr-btn attr-minus" data-mattr="m-inteligencia">−</button><input class="attr-value" id="m-attr-inteligencia" type="number" min="1" max="30" value="8" data-msave="m-inteligencia" /><button class="attr-btn attr-plus" data-mattr="m-inteligencia">+</button></div><div class="attr-mod-display" id="m-mod-inteligencia">-1</div><div class="attr-mod-label">Modificador</div></div>
+          <div class="attr-card"><div class="attr-name">Sabedoria</div><div class="attr-abbr">SAB</div><div class="attr-controls"><button class="attr-btn attr-minus" data-mattr="m-sabedoria">−</button><input class="attr-value" id="m-attr-sabedoria" type="number" min="1" max="30" value="10" data-msave="m-sabedoria" /><button class="attr-btn attr-plus" data-mattr="m-sabedoria">+</button></div><div class="attr-mod-display" id="m-mod-sabedoria">+0</div><div class="attr-mod-label">Modificador</div></div>
+          <div class="attr-card"><div class="attr-name">Presença</div><div class="attr-abbr">PRE</div><div class="attr-controls"><button class="attr-btn attr-minus" data-mattr="m-presenca">−</button><input class="attr-value" id="m-attr-presenca" type="number" min="1" max="30" value="10" data-msave="m-presenca" /><button class="attr-btn attr-plus" data-mattr="m-presenca">+</button></div><div class="attr-mod-display" id="m-mod-presenca">+0</div><div class="attr-mod-label">Modificador</div></div>
+        </div>
+        <div class="derived-grid" style="margin-top:1.5rem;">
+          <div class="derived-card"><div class="derived-icon">❤</div><div class="derived-label">PV Máx.</div><div class="derived-value" id="m-val-pv">0</div><div class="derived-formula">Grau × (10 + ModCON)</div></div>
+          <div class="derived-card"><div class="derived-icon">🛡</div><div class="derived-label">Defesa</div><div class="derived-value" id="m-val-defesa">10</div><div class="derived-formula">10 + ModDES</div></div>
+          <div class="derived-card"><div class="derived-icon">⚡</div><div class="derived-label">Iniciativa</div><div class="derived-value" id="m-val-iniciativa">+0</div><div class="derived-formula">Modificador DES</div></div>
+        </div>
+        <!-- Barra de PV da maldição -->
+        <div class="resource-section" style="margin-top:1.5rem;grid-template-columns:1fr;">
+          <div class="resource-card pv-card">
+            <div class="resource-header"><span class="resource-label">Pontos de Vida</span><span class="resource-tag">PV</span></div>
+            <div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pv-fill" id="m-pv-fill" style="width:100%"></div></div></div>
+            <div class="resource-controls">
+              <button class="res-btn res-minus" data-mres="m-pv">−</button>
+              <div class="resource-values"><span class="res-current" id="m-pv-current">0</span><span class="res-sep">/</span><span class="res-max" id="m-pv-max">0</span></div>
+              <button class="res-btn res-plus" data-mres="m-pv">+</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Técnicas maldição -->
+      <section class="tab-panel" id="tab-m-tecnicas">
+        <div class="panel-header"><h2 class="panel-title">Técnicas</h2><p class="panel-subtitle">Habilidades e poderes da maldição</p></div>
+        <div class="section-action-row"><h3 class="section-subtitle">Habilidades</h3><button class="btn-add" id="btn-add-m-hab">+ Nova Habilidade</button></div>
+        <div id="m-hab-list" class="item-list"></div>
+        <div class="item-form hidden" id="m-hab-form">
+          <h4 class="item-form-title">Nova Habilidade</h4>
+          <div class="item-form-grid">
+            <div class="form-group span-2"><label class="form-label">Nome</label><input class="form-input" id="mh-nome" type="text" /></div>
+            <div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="mh-tipo"><option>Passiva</option><option>Ação</option><option>Reação</option><option>Domínio</option><option>Especial</option></select></div>
+            <div class="form-group"><label class="form-label">Dano / Efeito</label><input class="form-input" id="mh-dano" type="text" /></div>
+            <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="mh-desc" rows="2"></textarea></div>
+          </div>
+          <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-m-hab">Adicionar</button><button class="btn-cancel" id="btn-cancel-m-hab">Cancelar</button></div>
+        </div>
+      </section>
+      <!-- Resistências -->
+      <section class="tab-panel" id="tab-m-resistencias">
+        <div class="panel-header"><h2 class="panel-title">Resistências</h2><p class="panel-subtitle">Imunidades e vulnerabilidades da maldição</p></div>
+        <div class="aspects-grid">
+          <div class="aspect-card"><label class="form-label">Imunidades</label><textarea class="form-textarea" id="m-imunidades" data-msave="m-imunidades" placeholder="Ex: fogo, veneno, dano não mágico..." rows="4"></textarea></div>
+          <div class="aspect-card"><label class="form-label">Resistências</label><textarea class="form-textarea" id="m-resistencias" data-msave="m-resistencias" placeholder="Ex: dano cortante, contundente..." rows="4"></textarea></div>
+          <div class="aspect-card"><label class="form-label">Vulnerabilidades</label><textarea class="form-textarea" id="m-vulnerabilidades" data-msave="m-vulnerabilidades" placeholder="Ex: energia amaldiçoada concentrada..." rows="4"></textarea></div>
+          <div class="aspect-card"><label class="form-label">Sentidos Especiais</label><textarea class="form-textarea" id="m-sentidos" data-msave="m-sentidos" placeholder="Ex: visão no escuro, percepção mística..." rows="4"></textarea></div>
+        </div>
+      </section>
+      <!-- Ações -->
+      <section class="tab-panel" id="tab-m-acoes">
+        <div class="panel-header"><h2 class="panel-title">Ações de Combate</h2><p class="panel-subtitle">O que a maldição faz em batalha</p></div>
+        <div class="section-action-row"><h3 class="section-subtitle">Ações</h3><button class="btn-add" id="btn-add-m-acao">+ Nova Ação</button></div>
+        <div id="m-acoes-list" class="item-list"></div>
+        <div class="item-form hidden" id="m-acao-form">
+          <h4 class="item-form-title">Nova Ação</h4>
+          <div class="item-form-grid">
+            <div class="form-group span-2"><label class="form-label">Nome da Ação</label><input class="form-input" id="ma-nome" type="text" /></div>
+            <div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="ma-tipo"><option>Ação</option><option>Ação Bônus</option><option>Reação</option><option>Ação Lendária</option></select></div>
+            <div class="form-group"><label class="form-label">Alcance</label><input class="form-input" id="ma-alcance" type="text" /></div>
+            <div class="form-group"><label class="form-label">Dano</label><input class="form-input" id="ma-dano" type="text" placeholder="Ex: 2d8+4" /></div>
+            <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="ma-desc" rows="2"></textarea></div>
+          </div>
+          <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-m-acao">Adicionar</button><button class="btn-cancel" id="btn-cancel-m-acao">Cancelar</button></div>
+        </div>
+      </section>
+      <!-- Status maldição -->
+      <section class="tab-panel" id="tab-m-status">
+        <div class="panel-header"><h2 class="panel-title">Status</h2><p class="panel-subtitle">Visão geral da maldição</p></div>
+        <div class="status-overview">
+          <div class="status-block"><div class="status-block-title">☠ Identidade</div><div class="status-row"><span>Nome</span><span id="mst-nome">—</span></div><div class="status-row"><span>Grau</span><span id="mst-grau">—</span></div><div class="status-row"><span>Tipo</span><span id="mst-tipo">—</span></div><div class="status-row"><span>Ameaça</span><span id="mst-ameaca">—</span></div></div>
+          <div class="status-block"><div class="status-block-title">⬡ Atributos</div><div class="status-row"><span>Força</span><span id="mst-forca">—</span></div><div class="status-row"><span>Destreza</span><span id="mst-destreza">—</span></div><div class="status-row"><span>Constituição</span><span id="mst-constituicao">—</span></div><div class="status-row"><span>Inteligência</span><span id="mst-inteligencia">—</span></div></div>
+          <div class="status-block"><div class="status-block-title">⚔ Combate</div><div class="status-row"><span>PV Máx.</span><span id="mst-pv">0</span></div><div class="status-row"><span>Defesa</span><span id="mst-def">10</span></div><div class="status-row"><span>Iniciativa</span><span id="mst-init">+0</span></div></div>
+          <div class="status-block"><div class="status-block-title">◉ Habilidades</div><div class="status-row"><span>Técnicas</span><span id="mst-tecnicas">0</span></div><div class="status-row"><span>Ações</span><span id="mst-acoes">0</span></div></div>
+        </div>
+      </section>
+      <!-- Anotações maldição -->
+      <section class="tab-panel" id="tab-m-anotacoes">
+        <div class="panel-header"><h2 class="panel-title">Anotações</h2></div>
+        <div class="form-group"><label class="form-label">Notas do Mestre</label><textarea class="form-textarea" id="m-anotacoes" data-msave="m-anotacoes" placeholder="Segredos, motivações, história..." rows="10"></textarea></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PÁGINA: CAMPANHAS
+══════════════════════════════════════════════ -->
+<div id="page-campanhas" class="page">
+  <div class="page-topbar">
+    <button class="back-btn" data-page="page-home">← Voltar</button>
+    <h2 class="page-topbar-title">📜 Campanhas</h2>
+    <button class="btn-add-top" data-page="page-campanha-form" data-action="new-campanha">+ Criar Campanha</button>
+  </div>
+  <div class="lista-container" id="lista-campanhas">
+    <div class="lista-empty" id="empty-campanhas">Nenhuma campanha registrada ainda.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PÁGINA: CRIAR/EDITAR CAMPANHA
+══════════════════════════════════════════════ -->
+<div id="page-campanha-form" class="page">
+  <div class="page-topbar">
+    <button class="back-btn" data-page="page-campanhas">← Voltar</button>
+    <h2 class="page-topbar-title">📜 Criar Campanha</h2>
+    <button class="btn-save-char" id="btn-save-campanha">💾 Salvar Campanha</button>
+  </div>
+  <div class="campanha-layout">
+    <!-- Cabeçalho da campanha -->
+    <div class="camp-header-form">
+      <div class="camp-img-upload">
+        <label class="portrait-label" style="padding-bottom:60%;border-radius:12px;" for="camp-img-upload">
+          <img id="camp-img-preview" src="" alt="" style="display:none;border-radius:10px;" />
+          <div class="portrait-placeholder" id="camp-img-placeholder"><span class="portrait-icon">📜</span><span class="portrait-hint">Imagem da Campanha</span></div>
+          <div class="portrait-overlay">Trocar</div>
+        </label>
+        <input type="file" id="camp-img-upload" accept="image/*" style="display:none;" />
+      </div>
+      <div class="camp-header-fields">
+        <div class="form-group"><label class="form-label">Nome da Campanha</label><input class="form-input" id="camp-nome" type="text" placeholder="Nome da campanha..." /></div>
+        <div class="form-group" style="margin-top:0.75rem;"><label class="form-label">Descrição</label><textarea class="form-textarea" id="camp-desc" placeholder="Sinopse e contexto da campanha..." rows="4"></textarea></div>
+      </div>
+    </div>
+
+    <!-- Abas da campanha -->
+    <div class="camp-tabs">
+      <button class="camp-tab-btn active" data-ctab="ct-personagens">⚡ Personagens</button>
+      <button class="camp-tab-btn" data-ctab="ct-maldicoes">👁 Maldições</button>
+      <button class="camp-tab-btn" data-ctab="ct-eventos">📅 Eventos</button>
+      <button class="camp-tab-btn" data-ctab="ct-arquivos">📁 Arquivos</button>
+      <button class="camp-tab-btn" data-ctab="ct-anotacoes">✎ Anotações</button>
+    </div>
+
+    <div class="camp-tab-content">
+      <div class="ctab-panel active" id="ct-personagens">
+        <div class="section-action-row"><h3 class="section-subtitle">Personagens da Campanha</h3><button class="btn-add" id="btn-camp-add-char">+ Adicionar Feiticeiro</button></div>
+        <div id="camp-chars-list" class="item-list"><div style="color:var(--text-muted);font-style:italic;font-size:0.85rem;padding:1rem;">Nenhum personagem adicionado.</div></div>
+      </div>
+      <div class="ctab-panel" id="ct-maldicoes">
+        <div class="section-action-row"><h3 class="section-subtitle">Maldições da Campanha</h3><button class="btn-add" id="btn-camp-add-mal">+ Adicionar Maldição</button></div>
+        <div id="camp-mals-list" class="item-list"><div style="color:var(--text-muted);font-style:italic;font-size:0.85rem;padding:1rem;">Nenhuma maldição adicionada.</div></div>
+      </div>
+      <div class="ctab-panel" id="ct-eventos">
+        <div class="section-action-row"><h3 class="section-subtitle">Eventos</h3><button class="btn-add" id="btn-add-evento">+ Novo Evento</button></div>
+        <div id="eventos-list" class="item-list"></div>
+        <div class="item-form hidden" id="evento-form">
+          <h4 class="item-form-title">Novo Evento</h4>
+          <div class="item-form-grid">
+            <div class="form-group span-2"><label class="form-label">Título</label><input class="form-input" id="ev-titulo" type="text" /></div>
+            <div class="form-group"><label class="form-label">Data (in-game)</label><input class="form-input" id="ev-data" type="text" placeholder="Ex: Dia 3 de Outubro..." /></div>
+            <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="ev-desc" rows="3"></textarea></div>
+          </div>
+          <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-evento">Adicionar</button><button class="btn-cancel" id="btn-cancel-evento">Cancelar</button></div>
+        </div>
+      </div>
+      <div class="ctab-panel" id="ct-arquivos">
+        <div class="section-action-row"><h3 class="section-subtitle">Arquivos</h3><label class="btn-add" for="camp-file-upload" style="cursor:pointer;">+ Adicionar Arquivo</label></div>
+        <input type="file" id="camp-file-upload" multiple accept="image/*,audio/*,.pdf,.txt,.doc,.docx" style="display:none;" />
+        <div id="arquivos-list" class="item-list"></div>
+      </div>
+      <div class="ctab-panel" id="ct-anotacoes">
+        <div class="form-group"><label class="form-label">Anotações do Mestre</label><textarea class="form-textarea" id="camp-anotacoes" placeholder="Segredos da campanha, planejamento de sessões..." rows="12"></textarea></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
