@@ -200,6 +200,7 @@
         <button class="nav-btn" data-tab="combate"><span class="nav-icon">⚔</span><span>Combate</span></button>
         <button class="nav-btn" data-tab="inventario"><span class="nav-icon">⬖</span><span>Inventário</span></button>
         <button class="nav-btn" data-tab="anotacoes"><span class="nav-icon">✎</span><span>Anotações</span></button>
+        <button class="nav-btn" data-tab="shikigami"><span class="nav-icon">⬡</span><span>Shikigami</span></button>
         <button class="nav-btn" data-tab="status"><span class="nav-icon">◎</span><span>Status</span></button>
       </nav>
       <div class="sidebar-actions">
@@ -378,6 +379,39 @@
         <div class="form-group"><label class="form-label">Anotações da Campanha</label><textarea class="form-textarea" id="anotacoes-campanha" data-save="anotacoes-campanha" placeholder="Eventos importantes, locais visitados, NPCs..." rows="8"></textarea></div>
         <div class="form-group" style="margin-top:1rem;"><label class="form-label">Objetivos e Missões</label><textarea class="form-textarea" id="anotacoes-missoes" data-save="anotacoes-missoes" placeholder="Missões ativas, metas pessoais..." rows="5"></textarea></div>
         <div class="form-group" style="margin-top:1rem;"><label class="form-label">Notas de Combate</label><textarea class="form-textarea" id="anotacoes-combate" data-save="anotacoes-combate" placeholder="Estratégias, combos, fraquezas de inimigos..." rows="5"></textarea></div>
+      </section>
+
+      <!-- ABA: SHIKIGAMI -->
+      <section class="tab-panel" id="tab-shikigami">
+        <div class="panel-header"><h2 class="panel-title">Shikigami</h2><p class="panel-subtitle">Espíritos invocados e controlados</p></div>
+        <div class="section-action-row"><h3 class="section-subtitle">Shikigamis Controlados</h3><button class="btn-add" id="btn-add-shikigami">+ Novo Shikigami</button></div>
+        <div id="shikigami-list" class="shikigami-list"></div>
+        
+        <!-- Formulário de novo Shikigami -->
+        <div class="item-form hidden" id="shikigami-form">
+          <h4 class="item-form-title">Novo Shikigami</h4>
+          <div class="item-form-grid">
+            <div class="form-group span-2"><label class="form-label">Nome do Shikigami</label><input class="form-input" id="sk-nome" type="text" placeholder="Nome do espírito..." /></div>
+            <div class="form-group"><label class="form-label">Tipo</label><input class="form-input" id="sk-tipo" type="text" placeholder="Ex: Serpente, Protetor..." /></div>
+            <div class="form-group"><label class="form-label">Grau</label><select class="form-select" id="sk-grau"><option>IV</option><option>III</option><option>II</option><option>I</option><option>Especial</option></select></div>
+            <div class="form-group"><label class="form-label">Nível</label><input class="form-input" id="sk-nivel" type="number" min="1" max="20" value="1" /></div>
+            <div class="form-group"><label class="form-label">Afinidade</label><input class="form-input" id="sk-afinidade" type="text" placeholder="Ex: Fogo, Gelo..." /></div>
+            <div class="form-group"><label class="form-label">Vínculo com Usuário</label><input class="form-input" id="sk-vinculo" type="text" placeholder="Grau de lealdade..." /></div>
+            <div class="form-group"><label class="form-label">Estado</label><select class="form-select" id="sk-estado"><option>Ativo</option><option>Selado</option><option>Destruído</option></select></div>
+            <div class="form-group"><label class="form-label">Foto</label><input class="form-input" id="sk-img" type="file" accept="image/*" /></div>
+            <div class="form-group span-2"><label class="form-label">Aparência</label><textarea class="form-textarea" id="sk-aparencia" placeholder="Como o Shikigami parece..." rows="2"></textarea></div>
+            <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="sk-desc" placeholder="Informações gerais..." rows="2"></textarea></div>
+            <!-- Atributos -->
+            <div  class="form-label" style="grid-column: span 2; margin-top: 0.5rem;">Atributos</div>
+            <div class="form-group"><label class="form-label">Força</label><input class="form-input sk-attr" id="sk-attr-forca" type="number" min="1" max="30" value="10" /></div>
+            <div class="form-group"><label class="form-label">Destreza</label><input class="form-input sk-attr" id="sk-attr-destreza" type="number" min="1" max="30" value="10" /></div>
+            <div class="form-group"><label class="form-label">Constituição</label><input class="form-input sk-attr" id="sk-attr-constituicao" type="number" min="1" max="30" value="10" /></div>
+            <div class="form-group"><label class="form-label">Inteligência</label><input class="form-input sk-attr" id="sk-attr-inteligencia" type="number" min="1" max="30" value="10" /></div>
+            <div class="form-group"><label class="form-label">Sabedoria</label><input class="form-input sk-attr" id="sk-attr-sabedoria" type="number" min="1" max="30" value="10" /></div>
+            <div class="form-group"><label class="form-label">Presença</label><input class="form-input sk-attr" id="sk-attr-presenca" type="number" min="1" max="30" value="10" /></div>
+          </div>
+          <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-shikigami">Adicionar</button><button class="btn-cancel" id="btn-cancel-shikigami">Cancelar</button></div>
+        </div>
       </section>
 
       <!-- ABA: STATUS -->
