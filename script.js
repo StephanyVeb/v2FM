@@ -30,13 +30,17 @@ function freshShikigami() {
     id:Date.now(),
     nome:'',tipo:'',grau:'IV',nivel:1,afinidade:'',vinculo:'',estado:'Ativo',
     aparencia:'',desc:'',
+    comportamento:'Controlado pelo usuário',
+    'acao-padrao':'Ação padrão','acao-bonus':'Ação bônus','reacao':'Reação','movimento':'9m',
+    resistencias:'',imunidades:'',fraquezas:'',vulnerabilidades:'',
     'attr-forca':10,'attr-destreza':10,'attr-constituicao':10,
     'attr-inteligencia':10,'attr-sabedoria':10,'attr-presenca':10,
     'pv-current':0,'pe-current':0,
-    'tecnicas':[],
+    habilidades:[],buffs:[],debuffs:[],
     'metodo-invocacao':'','energia-necessaria':0,'max-invocacoes':1,'invocacoes-atuais':0,
     'distancia-maxima':30,'campo-obediencia':'Completa',
     portrait:null,
+    expanded:false,
   };
 }
 
@@ -136,10 +140,12 @@ function initNavigation(){
     if(action==='new-char'){
       FICHA=freshFicha();FICHA_ID=null;
       resetFichaUI();
+      showToast('Arrasa ദ്ദി◝ ⩊ ◜.ᐟ');
     }
     if(action==='new-maldicao'){
       MALDICAO=freshMaldicao();MALDICAO_ID=null;
       resetMaldicaoUI();
+      showToast('Adoro monstros sabia? (˵˃ ᗜ ˂˵)');
     }
     if(action==='new-campanha'){
       CAMPANHA=freshCampanha();CAMPANHA_ID=null;
@@ -935,16 +941,23 @@ function initParticles(){
 
 /* ──────────────── SHIKIGAMI ──────────────── */
 let shikigamiImgPreview=null;
+let shikigamiEditingIndex=null;
+let currentAbilityTargetIndex=null;
+let currentAbilityEditId=null;
 
 function initShikigami(){
   $('btn-add-shikigami')?.addEventListener('click',()=>{
+    shikigamiEditingIndex=null;
     shikigamiImgPreview=null;
     clearShikigamiForm();
+    $('btn-confirm-shikigami').textContent='Adicionar';
     $('shikigami-form')?.classList.toggle('hidden');
   });
   $('btn-cancel-shikigami')?.addEventListener('click',()=>{
     $('shikigami-form')?.classList.add('hidden');
     shikigamiImgPreview=null;
+    shikigamiEditingIndex=null;
+    $('btn-confirm-shikigami').textContent='Adicionar';
   });
   $('sk-img')?.addEventListener('change',e=>{
     const f=e.target.files[0];if(!f)return;
@@ -952,24 +965,51 @@ function initShikigami(){
   });
   $('btn-confirm-shikigami')?.addEventListener('click',()=>{
     const nome=$('sk-nome')?.value.trim();if(!nome){showToast('Informe o nome!');return;}
-    const sk=freshShikigami();
-    sk.nome=nome;sk.tipo=$('sk-tipo')?.value.trim();sk.grau=$('sk-grau')?.value;sk.nivel=parseInt($('sk-nivel')?.value)||1;
-    sk.afinidade=$('sk-afinidade')?.value.trim();sk.vinculo=$('sk-vinculo')?.value.trim();sk.estado=$('sk-estado')?.value;
-    sk.aparencia=$('sk-aparencia')?.value.trim();sk.desc=$('sk-desc')?.value.trim();sk.portrait=shikigamiImgPreview;
-    // Atributos
-    sk['attr-forca']=Math.max(1,Math.min(30,parseInt($('sk-attr-forca')?.value)||10));
-    sk['attr-destreza']=Math.max(1,Math.min(30,parseInt($('sk-attr-destreza')?.value)||10));
-    sk['attr-constituicao']=Math.max(1,Math.min(30,parseInt($('sk-attr-constituicao')?.value)||10));
-    sk['attr-inteligencia']=Math.max(1,Math.min(30,parseInt($('sk-attr-inteligencia')?.value)||10));
-    sk['attr-sabedoria']=Math.max(1,Math.min(30,parseInt($('sk-attr-sabedoria')?.value)||10));
-    sk['attr-presenca']=Math.max(1,Math.min(30,parseInt($('sk-attr-presenca')?.value)||10));
-    const modCon=calcMod(sk['attr-constituicao']);
-    sk['pv-current']=calcShikigamiPV(sk.nivel,modCon);
-    const modAttr=calcMod(sk['attr-inteligencia']);
-    sk['pe-current']=calcShikigamiPE(sk.nivel,modAttr);
+    const isEdit=shikigamiEditingIndex!==null;
+    const sk=isEdit?FICHA.shikigamis[shikigamiEditingIndex]:freshShikigami();
+    collectShikigamiFormValues(sk);
+    sk.portrait=shikigamiImgPreview||sk.portrait;
     if(!FICHA.shikigamis)FICHA.shikigamis=[];
-    FICHA.shikigamis.push(sk);
-    renderShikigamis();clearShikigamiForm();$('shikigami-form')?.classList.add('hidden');scheduleAutoSave();showToast(`"${nome}" adicionado!`);
+    if(!isEdit){FICHA.shikigamis.push(sk);showToast(`"${nome}" adicionado!`);} else {FICHA.shikigamis[shikigamiEditingIndex]=sk;showToast('Shikigami atualizado!');}
+    renderShikigamis();clearShikigamiForm();$('shikigami-form')?.classList.add('hidden');scheduleAutoSave();
+  });
+  $('btn-cancel-shikigami-ability')?.addEventListener('click',()=>{
+    $('shikigami-ability-form')?.classList.add('hidden');
+    clearShikigamiAbilityForm();
+  });
+  $('btn-confirm-shikigami-ability')?.addEventListener('click',()=>{
+    const nome=$('sa-nome')?.value.trim();if(!nome){showToast('Informe o nome da habilidade!');return;}
+    const idx=currentAbilityTargetIndex;
+    if(typeof idx!=='number' || !FICHA.shikigamis?.[idx]){showToast('Selecione um Shikigami válido.');return;}
+    const sk=FICHA.shikigamis[idx];
+    const habilidade={
+      id:currentAbilityEditId||Date.now(),
+      nome:nome,
+      categoria:$('sa-categoria')?.value,
+      tipoDano:$('sa-tipo-dano')?.value,
+      actionType:$('sa-acao-tipo')?.value,
+      formulaType:$('sa-formula')?.value,
+      alcance:$('sa-alcance')?.value.trim(),
+      dano:$('sa-dano')?.value.trim(),
+      custoEnergia:parseInt($('sa-custo')?.value)||0,
+      cooldown:parseInt($('sa-cooldown')?.value)||0,
+      areaEfeito:$('sa-aoe')?.value.trim(),
+      condicaoUso:$('sa-condicao')?.value.trim(),
+      descricao:$('sa-desc')?.value.trim(),
+    };
+    if(!sk.habilidades)sk.habilidades=[];
+    if(currentAbilityEditId){
+      const idxH=sk.habilidades.findIndex(a=>a.id===currentAbilityEditId);
+      if(idxH>=0)sk.habilidades[idxH]=habilidade;
+      showToast('Habilidade atualizada!');
+    } else {
+      sk.habilidades.push(habilidade);
+      showToast(`"${nome}" adicionada!`);
+    }
+    renderShikigamis();
+    clearShikigamiAbilityForm();
+    $('shikigami-ability-form')?.classList.add('hidden');
+    scheduleAutoSave();
   });
   renderShikigamis();
 }
@@ -977,8 +1017,102 @@ function initShikigami(){
 function clearShikigamiForm(){
   clearFields('sk-nome','sk-tipo','sk-nivel','sk-afinidade','sk-vinculo','sk-aparencia','sk-desc');
   clearFields('sk-attr-forca','sk-attr-destreza','sk-attr-constituicao','sk-attr-inteligencia','sk-attr-sabedoria','sk-attr-presenca');
+  $('sk-comportamento').value='Controlado pelo usuário';
+  $('sk-acao-padrao').value='Ação padrão';
+  $('sk-acao-bonus').value='Ação bônus';
+  $('sk-reacao').value='Reação';
+  $('sk-movimento').value='9m';
+  $('sk-resistencias').value='';
+  $('sk-imunidades').value='';
+  $('sk-fraquezas').value='';
+  $('sk-vulnerabilidades').value='';
   $('sk-grau').value='IV';$('sk-estado').value='Ativo';$('sk-img').value='';shikigamiImgPreview=null;
   document.querySelectorAll('.sk-attr').forEach(inp=>inp.value='10');
+  shikigamiEditingIndex=null;
+  $('btn-confirm-shikigami').textContent='Adicionar';
+}
+
+function clearShikigamiAbilityForm(){
+  clearFields('sa-nome','sa-alcance','sa-dano','sa-custo','sa-cooldown','sa-aoe','sa-condicao','sa-desc');
+  $('sa-categoria').value='Ataque Básico';
+  $('sa-tipo-dano').value='Cortante';
+  $('sa-acao-tipo').value='Ação padrão';
+  $('sa-formula').value='Corpo a Corpo';
+  currentAbilityTargetIndex=null;
+  currentAbilityEditId=null;
+  $('btn-confirm-shikigami-ability').textContent='Adicionar';
+}
+
+function collectShikigamiFormValues(sk){
+  if(!sk)sk=freshShikigami();
+  sk.nome=$('sk-nome')?.value.trim();
+  sk.tipo=$('sk-tipo')?.value.trim();
+  sk.grau=$('sk-grau')?.value;sk.nivel=parseInt($('sk-nivel')?.value)||1;
+  sk.afinidade=$('sk-afinidade')?.value.trim();sk.vinculo=$('sk-vinculo')?.value.trim();sk.estado=$('sk-estado')?.value;
+  sk.aparencia=$('sk-aparencia')?.value.trim();sk.desc=$('sk-desc')?.value.trim();
+  sk.comportamento=$('sk-comportamento')?.value||'Controlado pelo usuário';
+  sk['acao-padrao']=$('sk-acao-padrao')?.value||'Ação padrão';
+  sk['acao-bonus']=$('sk-acao-bonus')?.value||'Ação bônus';
+  sk['reacao']=$('sk-reacao')?.value||'Reação';
+  sk['movimento']=$('sk-movimento')?.value||'9m';
+  sk.resistencias=$('sk-resistencias')?.value.trim();
+  sk.imunidades=$('sk-imunidades')?.value.trim();
+  sk.fraquezas=$('sk-fraquezas')?.value.trim();
+  sk.vulnerabilidades=$('sk-vulnerabilidades')?.value.trim();
+  sk['attr-forca']=Math.max(1,Math.min(30,parseInt($('sk-attr-forca')?.value)||10));
+  sk['attr-destreza']=Math.max(1,Math.min(30,parseInt($('sk-attr-destreza')?.value)||10));
+  sk['attr-constituicao']=Math.max(1,Math.min(30,parseInt($('sk-attr-constituicao')?.value)||10));
+  sk['attr-inteligencia']=Math.max(1,Math.min(30,parseInt($('sk-attr-inteligencia')?.value)||10));
+  sk['attr-sabedoria']=Math.max(1,Math.min(30,parseInt($('sk-attr-sabedoria')?.value)||10));
+  sk['attr-presenca']=Math.max(1,Math.min(30,parseInt($('sk-attr-presenca')?.value)||10));
+  const modCon=calcMod(sk['attr-constituicao']);
+  const pvMax=calcShikigamiPV(sk.nivel,modCon);
+  sk['pv-current']=Math.min(Math.max(0,parseInt(sk['pv-current'])||pvMax),pvMax);
+  const modAttr=calcMod(sk['attr-inteligencia']);
+  const peMax=calcShikigamiPE(sk.nivel,modAttr);
+  sk['pe-current']=Math.min(Math.max(0,parseInt(sk['pe-current'])||peMax),peMax);
+  sk.habilidades=sk.habilidades||[];
+  return sk;
+}
+
+function getAttackRollFormula(abil, sk){
+  const map={
+    'Corpo a Corpo':['Força','attr-forca'],
+    'Ágil':['Destreza','attr-destreza'],
+    'Energético':['Inteligência','attr-inteligencia'],
+    'Alma':['Presença','attr-presenca'],
+  };
+  const [label,attr]=map[abil.formulaType]||map['Ágil'];
+  const mod=fmtMod(calcMod(sk[attr]||10));
+  return `1d20 + Mod. ${label} (${mod}) + Proficiência`;
+}
+
+function openShikigamiAbilityForm(idx, abilityId=null){
+  currentAbilityTargetIndex=idx;
+  currentAbilityEditId=abilityId;
+  clearShikigamiAbilityForm();
+  if(abilityId){
+    const sk=FICHA.shikigamis[idx];
+    const abil=sk?.habilidades?.find(a=>a.id===abilityId);
+    if(abil){
+      $('sa-nome').value=abil.nome||'';
+      $('sa-categoria').value=abil.categoria||'Ataque Básico';
+      $('sa-tipo-dano').value=abil.tipoDano||'Cortante';
+      $('sa-acao-tipo').value=abil.actionType||'Ação padrão';
+      $('sa-formula').value=abil.formulaType||'Corpo a Corpo';
+      $('sa-alcance').value=abil.alcance||'';
+      $('sa-dano').value=abil.dano||'';
+      $('sa-custo').value=abil.custoEnergia||0;
+      $('sa-cooldown').value=abil.cooldown||0;
+      $('sa-aoe').value=abil.areaEfeito||'';
+      $('sa-condicao').value=abil.condicaoUso||'';
+      $('sa-desc').value=abil.descricao||'';
+      $('btn-confirm-shikigami-ability').textContent='Salvar';
+    }
+  } else {
+    $('btn-confirm-shikigami-ability').textContent='Adicionar';
+  }
+  $('shikigami-ability-form')?.classList.remove('hidden');
 }
 
 function renderShikigamis(){
@@ -996,9 +1130,11 @@ function renderShikigamis(){
     sk['pv-current']=pvCur;sk['pe-current']=peCur;
     const pvPct=pvMax>0?Math.max(0,Math.min(100,(pvCur/pvMax)*100)):0;
     const pePct=peMax>0?Math.max(0,Math.min(100,(peCur/peMax)*100)):0;
-    el.innerHTML=`<div class="shikigami-header" data-idx="${idx}"><div class="shikigami-toggle">▼</div><div class="shikigami-photo">${sk.portrait?`<img src="${escHtml(sk.portrait)}" alt="">`:'<div class="shikigami-photo-empty">✦</div>'}</div><div class="shikigami-info"><div class="shikigami-name">${escHtml(sk.nome)}</div><div class="shikigami-meta">${escHtml(sk.tipo||'—')} · Grau ${escHtml(sk.grau)}</div><div class="shikigami-status">${escHtml(sk.estado)}</div></div></div><div class="shikigami-details"><div class="shikigami-details-grid"><div class="shikigami-info-block"><div class="shikigami-info-block-title">Informações</div><div class="shikigami-info-row"><span class="label">Nível</span><span class="value">${sk.nivel}</span></div><div class="shikigami-info-row"><span class="label">Afinidade</span><span class="value">${escHtml(sk.afinidade||'—')}</span></div><div class="shikigami-info-row"><span class="label">Vínculo</span><span class="value">${escHtml(sk.vinculo||'—')}</span></div><div class="shikigami-info-row"><span class="label">Defesa</span><span class="value">${defesa}</span></div></div><div class="shikigami-info-block"><div class="shikigami-info-block-title">Invocação</div><div class="shikigami-info-row"><span class="label">Máx. Invocações</span><span class="value">${sk['max-invocacoes']||1}</span></div><div class="shikigami-info-row"><span class="label">Ativas</span><span class="value">${sk['invocacoes-atuais']||0}</span></div><div class="shikigami-info-row"><span class="label">Dist. Máxima</span><span class="value">${sk['distancia-maxima']||30}m</span></div><div class="shikigami-info-row"><span class="label">Lealdade</span><span class="value">${escHtml(sk['campo-obediencia']||'—')}</span></div></div></div><div class="shikigami-attrs"><div class="shikigami-attr-card"><div class="shikigami-attr-name">FOR</div><div class="shikigami-attr-value">${sk['attr-forca']}</div><div class="shikigami-attr-mod">${fmtMod(modFor)}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">DES</div><div class="shikigami-attr-value">${sk['attr-destreza']}</div><div class="shikigami-attr-mod">${fmtMod(modDes)}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">CON</div><div class="shikigami-attr-value">${sk['attr-constituicao']}</div><div class="shikigami-attr-mod">${fmtMod(modCon)}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">INT</div><div class="shikigami-attr-value">${sk['attr-inteligencia']}</div><div class="shikigami-attr-mod">${fmtMod(calcMod(sk['attr-inteligencia']))}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">SAB</div><div class="shikigami-attr-value">${sk['attr-sabedoria']}</div><div class="shikigami-attr-mod">${fmtMod(calcMod(sk['attr-sabedoria']))}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">PRE</div><div class="shikigami-attr-value">${sk['attr-presenca']}</div><div class="shikigami-attr-mod">${fmtMod(calcMod(sk['attr-presenca']))}</div></div></div><div class="shikigami-resources"><div class="shikigami-resource-card pv"><div class="shikigami-resource-header">PV</div><div class="shikigami-resource-bar"><div class="shikigami-resource-fill pv" style="width:${pvPct}%"></div></div><div class="shikigami-resource-values" style="justify-content: space-around;"><button class="res-btn res-minus" data-sres="pv" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">−</button><span>${pvCur}</span><span>/</span><span>${pvMax}</span><button class="res-btn res-plus" data-sres="pv" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">+</button></div></div><div class="shikigami-resource-card pe"><div class="shikigami-resource-header">PE</div><div class="shikigami-resource-bar"><div class="shikigami-resource-fill pe" style="width:${pePct}%"></div></div><div class="shikigami-resource-values" style="justify-content: space-around;"><button class="res-btn res-minus" data-sres="pe" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">−</button><span>${peCur}</span><span>/</span><span>${peMax}</span><button class="res-btn res-plus" data-sres="pe" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">+</button></div></div></div><div class="shikigami-buttons"><button class="shikigami-edit-btn" data-idx="${idx}">✏ Editar</button><button class="shikigami-delete-btn" data-idx="${idx}">✕ Remover</button></div></div>`;
+    const abilitiesHtml=(sk.habilidades?.length?sk.habilidades.map(ab=>`<div class="ability-card"><div class="ability-card-head"><div class="ability-card-title">${escHtml(ab.nome)}</div><div class="ability-card-badge">${escHtml(ab.categoria)}</div></div><div class="ability-card-meta">${escHtml(ab.tipoDano)} · ${escHtml(ab.actionType)} · ${escHtml(ab.alcance||'—')}</div><div class="ability-card-stats"><span>${escHtml(ab.dano||'—')}</span><span>${ab.custoEnergia} PE</span><span>CD ${ab.cooldown}</span></div><div class="ability-card-formula">${escHtml(getAttackRollFormula(ab,sk))}</div><div class="ability-card-desc">${escHtml(ab.descricao||'Sem descrição')}</div><div class="ability-card-foot"><span>AoE: ${escHtml(ab.areaEfeito||'Nenhuma')}</span><span>${escHtml(ab.condicaoUso||'Sem condição')}</span></div><div class="ability-card-controls"><button class="ability-edit-btn" data-idx="${idx}" data-aid="${ab.id}">✎</button><button class="ability-remove-btn" data-idx="${idx}" data-aid="${ab.id}">✕</button></div></div>`).join(''):'<div class="ability-empty">Nenhuma habilidade registrada.</div>');
+    el.innerHTML=`<div class="shikigami-header" data-idx="${idx}"><div class="shikigami-toggle">▼</div><div class="shikigami-photo">${sk.portrait?`<img src="${escHtml(sk.portrait)}" alt="">`:'<div class="shikigami-photo-empty">✦</div>'}</div><div class="shikigami-info"><div class="shikigami-name">${escHtml(sk.nome)}</div><div class="shikigami-meta">${escHtml(sk.tipo||'—')} · Grau ${escHtml(sk.grau)}</div><div class="shikigami-status">${escHtml(sk.estado)}</div></div></div><div class="shikigami-details"><div class="shikigami-details-grid"><div class="shikigami-info-block"><div class="shikigami-info-block-title">Informações</div><div class="shikigami-info-row"><span class="label">Nível</span><span class="value">${sk.nivel}</span></div><div class="shikigami-info-row"><span class="label">Afinidade</span><span class="value">${escHtml(sk.afinidade||'—')}</span></div><div class="shikigami-info-row"><span class="label">Vínculo</span><span class="value">${escHtml(sk.vinculo||'—')}</span></div><div class="shikigami-info-row"><span class="label">Defesa</span><span class="value">${defesa}</span></div></div><div class="shikigami-info-block"><div class="shikigami-info-block-title">Invocação</div><div class="shikigami-info-row"><span class="label">Máx. Invocações</span><span class="value">${sk['max-invocacoes']||1}</span></div><div class="shikigami-info-row"><span class="label">Ativas</span><span class="value">${sk['invocacoes-atuais']||0}</span></div><div class="shikigami-info-row"><span class="label">Dist. Máxima</span><span class="value">${sk['distancia-maxima']||30}m</span></div><div class="shikigami-info-row"><span class="label">Lealdade</span><span class="value">${escHtml(sk['campo-obediencia']||'—')}</span></div></div><div class="shikigami-info-block"><div class="shikigami-info-block-title">Combate</div><div class="shikigami-info-row"><span class="label">Comportamento</span><span class="value">${escHtml(sk.comportamento||'Controlado pelo usuário')}</span></div><div class="shikigami-info-row"><span class="label">Ação Padrão</span><span class="value">${escHtml(sk['acao-padrao']||'Ação padrão')}</span></div><div class="shikigami-info-row"><span class="label">Ação Bônus</span><span class="value">${escHtml(sk['acao-bonus']||'Ação bônus')}</span></div><div class="shikigami-info-row"><span class="label">Reação</span><span class="value">${escHtml(sk.reacao||'Reação')}</span></div></div><div class="shikigami-info-block"><div class="shikigami-info-block-title">Resistências</div><div class="shikigami-info-row"><span class="label">Resistências</span><span class="value">${escHtml(sk.resistencias||'—')}</span></div><div class="shikigami-info-row"><span class="label">Imunidades</span><span class="value">${escHtml(sk.imunidades||'—')}</span></div><div class="shikigami-info-row"><span class="label">Fraquezas</span><span class="value">${escHtml(sk.fraquezas||'—')}</span></div><div class="shikigami-info-row"><span class="label">Vulnerabilidades</span><span class="value">${escHtml(sk.vulnerabilidades||'—')}</span></div></div></div><div class="shikigami-attrs"><div class="shikigami-attr-card"><div class="shikigami-attr-name">FOR</div><div class="shikigami-attr-value">${sk['attr-forca']}</div><div class="shikigami-attr-mod">${fmtMod(modFor)}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">DES</div><div class="shikigami-attr-value">${sk['attr-destreza']}</div><div class="shikigami-attr-mod">${fmtMod(modDes)}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">CON</div><div class="shikigami-attr-value">${sk['attr-constituicao']}</div><div class="shikigami-attr-mod">${fmtMod(modCon)}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">INT</div><div class="shikigami-attr-value">${sk['attr-inteligencia']}</div><div class="shikigami-attr-mod">${fmtMod(calcMod(sk['attr-inteligencia']))}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">SAB</div><div class="shikigami-attr-value">${sk['attr-sabedoria']}</div><div class="shikigami-attr-mod">${fmtMod(calcMod(sk['attr-sabedoria']))}</div></div><div class="shikigami-attr-card"><div class="shikigami-attr-name">PRE</div><div class="shikigami-attr-value">${sk['attr-presenca']}</div><div class="shikigami-attr-mod">${fmtMod(calcMod(sk['attr-presenca']))}</div></div></div><div class="shikigami-resources"><div class="shikigami-resource-card pv"><div class="shikigami-resource-header">PV</div><div class="shikigami-resource-bar"><div class="shikigami-resource-fill pv" style="width:${pvPct}%"></div></div><div class="shikigami-resource-values" style="justify-content: space-around;"><button type="button" class="res-btn res-minus" data-sres="pv" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">−</button><span>${pvCur}</span><span>/</span><span>${pvMax}</span><button type="button" class="res-btn res-plus" data-sres="pv" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">+</button></div></div><div class="shikigami-resource-card pe"><div class="shikigami-resource-header">PE</div><div class="shikigami-resource-bar"><div class="shikigami-resource-fill pe" style="width:${pePct}%"></div></div><div class="shikigami-resource-values" style="justify-content: space-around;"><button type="button" class="res-btn res-minus" data-sres="pe" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">−</button><span>${peCur}</span><span>/</span><span>${peMax}</span><button type="button" class="res-btn res-plus" data-sres="pe" data-sidx="${idx}" style="font-size: 0.8rem; width: 22px; height: 22px; padding: 0;">+</button></div></div></div><div class="shikigami-ability-panel"><div class="shikigami-ability-header"><div class="shikigami-ability-title">Habilidades</div><button class="btn-add btn-add-ability" data-idx="${idx}">+ Habilidade</button></div><div class="ability-list">${abilitiesHtml}</div></div><div class="shikigami-buttons"><button class="shikigami-edit-btn" data-idx="${idx}">✏ Editar</button><button class="shikigami-delete-btn" data-idx="${idx}">✕ Remover</button></div></div>`;
+    if(sk.expanded) el.classList.add('expanded');
     list.appendChild(el);
-    el.querySelector('.shikigami-header')?.addEventListener('click',()=>{el.classList.toggle('expanded');});
+    el.querySelector('.shikigami-header')?.addEventListener('click',()=>{sk.expanded = !sk.expanded; el.classList.toggle('expanded');});
     el.querySelector('.shikigami-edit-btn')?.addEventListener('click',()=>{editShikigami(sk,idx);});
     el.querySelector('.shikigami-delete-btn')?.addEventListener('click',()=>{if(!confirm(`Remover "${sk.nome}"?`))return;FICHA.shikigamis.splice(idx,1);renderShikigamis();scheduleAutoSave();showToast('Removido.');});
     // Botões de PV/PE
@@ -1006,48 +1142,65 @@ function renderShikigamis(){
       btn.addEventListener('click',e=>{
         e.stopPropagation();
         const tipo=btn.dataset.sres;const sidx=parseInt(btn.dataset.sidx);
-        if(tipo==='pv'){const pvMax=calcShikigamiPV(sk.nivel,calcMod(sk['attr-constituicao']));
+        let currentValue=0, maxValue=0;
+        if(tipo==='pv'){
+          maxValue=calcShikigamiPV(sk.nivel,calcMod(sk['attr-constituicao']));
           if(btn.classList.contains('res-minus'))sk['pv-current']=Math.max(0,sk['pv-current']-1);
-          else sk['pv-current']=Math.min(pvMax,sk['pv-current']+1);
-        }else{const peMax=calcShikigamiPE(sk.nivel,calcMod(sk['attr-forca']));
+          else sk['pv-current']=Math.min(maxValue,sk['pv-current']+1);
+          currentValue=sk['pv-current'];
+        }else{
+          maxValue=calcShikigamiPE(sk.nivel,calcMod(sk['attr-forca']));
           if(btn.classList.contains('res-minus'))sk['pe-current']=Math.max(0,sk['pe-current']-1);
-          else sk['pe-current']=Math.min(peMax,sk['pe-current']+1);
+          else sk['pe-current']=Math.min(maxValue,sk['pe-current']+1);
+          currentValue=sk['pe-current'];
         }
+        const card = btn.closest('.shikigami-resource-card');
+        if(card){
+          const currentSpan = card.querySelector('.resource-values span');
+          const fill = card.querySelector('.shikigami-resource-fill');
+          if(currentSpan) currentSpan.textContent = currentValue;
+          if(fill) fill.style.width = `${maxValue?Math.max(0,Math.min(100,(currentValue/maxValue)*100)):0}%`;
+        }
+        scheduleAutoSave();
+      });
+    });
+    el.querySelector('.btn-add-ability')?.addEventListener('click',e=>{e.stopPropagation();openShikigamiAbilityForm(idx);});
+    el.querySelectorAll('.ability-remove-btn').forEach(btn=>{
+      btn.addEventListener('click',e=>{
+        e.stopPropagation();
+        const aid=btn.dataset.aid;const target=FICHA.shikigamis[idx];
+        if(!target||!confirm('Remover habilidade?'))return;
+        target.habilidades=target.habilidades.filter(a=>a.id.toString()!==aid.toString());
         renderShikigamis();scheduleAutoSave();
+      });
+    });
+    el.querySelectorAll('.ability-edit-btn').forEach(btn=>{
+      btn.addEventListener('click',e=>{
+        e.stopPropagation();
+        const aid=btn.dataset.aid;
+        openShikigamiAbilityForm(idx,aid);
       });
     });
   });
 }
 
 function editShikigami(sk,idx){
+  shikigamiEditingIndex=idx;
   $('sk-nome').value=sk.nome;$('sk-tipo').value=sk.tipo;$('sk-grau').value=sk.grau;$('sk-nivel').value=sk.nivel;
   $('sk-afinidade').value=sk.afinidade;$('sk-vinculo').value=sk.vinculo;$('sk-estado').value=sk.estado;
   $('sk-aparencia').value=sk.aparencia;$('sk-desc').value=sk.desc;
-  // Atributos
+  $('sk-comportamento').value=sk.comportamento||'Controlado pelo usuário';
+  $('sk-acao-padrao').value=sk['acao-padrao']||'Ação padrão';
+  $('sk-acao-bonus').value=sk['acao-bonus']||'Ação bônus';
+  $('sk-reacao').value=sk.reacao||'Reação';
+  $('sk-movimento').value=sk.movimento||'9m';
+  $('sk-resistencias').value=sk.resistencias||'';$('sk-imunidades').value=sk.imunidades||'';
+  $('sk-fraquezas').value=sk.fraquezas||'';$('sk-vulnerabilidades').value=sk.vulnerabilidades||'';
   $('sk-attr-forca').value=sk['attr-forca']||10;$('sk-attr-destreza').value=sk['attr-destreza']||10;
   $('sk-attr-constituicao').value=sk['attr-constituicao']||10;$('sk-attr-inteligencia').value=sk['attr-inteligencia']||10;
   $('sk-attr-sabedoria').value=sk['attr-sabedoria']||10;$('sk-attr-presenca').value=sk['attr-presenca']||10;
   shikigamiImgPreview=sk.portrait;
-  const btnConfirm=$('btn-confirm-shikigami');
-  btnConfirm.textContent='Salvar Alterações';
-  const originalHandler=btnConfirm.onclick;
-  btnConfirm.onclick=()=>{
-    sk.nome=$('sk-nome').value.trim();sk.tipo=$('sk-tipo').value.trim();sk.grau=$('sk-grau').value;
-    sk.nivel=parseInt($('sk-nivel').value)||1;sk.afinidade=$('sk-afinidade').value.trim();
-    sk.vinculo=$('sk-vinculo').value.trim();sk.estado=$('sk-estado').value;sk.aparencia=$('sk-aparencia').value.trim();
-    sk.desc=$('sk-desc').value.trim();sk.portrait=shikigamiImgPreview;
-    // Atributos
-    sk['attr-forca']=Math.max(1,Math.min(30,parseInt($('sk-attr-forca').value)||10));
-    sk['attr-destreza']=Math.max(1,Math.min(30,parseInt($('sk-attr-destreza').value)||10));
-    sk['attr-constituicao']=Math.max(1,Math.min(30,parseInt($('sk-attr-constituicao').value)||10));
-    sk['attr-inteligencia']=Math.max(1,Math.min(30,parseInt($('sk-attr-inteligencia').value)||10));
-    sk['attr-sabedoria']=Math.max(1,Math.min(30,parseInt($('sk-attr-sabedoria').value)||10));
-    sk['attr-presenca']=Math.max(1,Math.min(30,parseInt($('sk-attr-presenca').value)||10));
-    const modCon=calcMod(sk['attr-constituicao']);sk['pv-current']=calcShikigamiPV(sk.nivel,modCon);
-    const modAttr=calcMod(sk['attr-inteligencia']);sk['pe-current']=calcShikigamiPE(sk.nivel,modAttr);
-    FICHA.shikigamis[idx]=sk;renderShikigamis();clearShikigamiForm();$('shikigami-form')?.classList.add('hidden');
-    btnConfirm.textContent='Adicionar';btnConfirm.onclick=originalHandler;scheduleAutoSave();showToast('Salvo!');
-  };
+  $('btn-confirm-shikigami').textContent='Salvar Alterações';
   $('shikigami-form')?.classList.remove('hidden');
 }
 
