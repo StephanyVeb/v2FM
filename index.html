@@ -54,7 +54,7 @@
           <span></span><span></span><span></span>
         </div>
         <div class="theme-name">Docinho</div>
-        <div class="theme-desc">Vintage soft aconchegante</div>
+        <div class="theme-desc">Meu namorado escolheu</div>
       </div>
     </div>
   </div>
@@ -337,9 +337,9 @@
       <section class="tab-panel" id="tab-combate">
         <div class="panel-header"><h2 class="panel-title">Combate</h2><p class="panel-subtitle">Pontos de Vida, Energia e estado em batalha</p></div>
         <div class="resource-section">
-          <div class="resource-card pv-card"><div class="resource-header"><span class="resource-label">Pontos de Vida</span><span class="resource-tag">PV</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pv-fill" id="pv-fill" style="width:100%"></div></div></div><div class="resource-controls"><button class="res-btn res-minus" data-res="pv">−</button><div class="resource-values"><span class="res-current" id="pv-current">0</span><span class="res-sep">/</span><span class="res-max" id="pv-max">0</span></div><button class="res-btn res-plus" data-res="pv">+</button></div><div class="resource-note">Máx: <span id="pv-max-note">selecione especialização</span></div></div>
-          <div class="resource-card pe-card"><div class="resource-header"><span class="resource-label">Energia Amaldiçoada</span><span class="resource-tag">PE</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pe-fill" id="pe-fill" style="width:100%"></div></div></div><div class="resource-controls"><button class="res-btn res-minus" data-res="pe">−</button><div class="resource-values"><span class="res-current" id="pe-current">0</span><span class="res-sep">/</span><span class="res-max" id="pe-max">0</span></div><button class="res-btn res-plus" data-res="pe">+</button></div><div class="resource-note">Máx: <span id="pe-max-note">selecione especialização</span></div></div>
-          <div class="resource-card alma-card"><div class="resource-header"><span class="resource-label">Integridade da Alma</span><span class="resource-tag">IA</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill alma-fill" id="alma-fill" style="width:100%"></div></div></div><div class="resource-controls"><button class="res-btn res-minus" data-res="alma">−</button><div class="resource-values"><span class="res-current" id="alma-current">0</span><span class="res-sep">/</span><span class="res-max" id="alma-max">0</span></div><button class="res-btn res-plus" data-res="alma">+</button></div><div class="resource-note">Igual ao máximo de PV</div></div>
+          <div class="resource-card pv-card"><div class="resource-header"><span class="resource-label">Pontos de Vida</span><span class="resource-tag">PV</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pv-fill" id="pv-fill" style="width:100%"></div></div></div><div class="resource-controls"><button type="button" class="res-btn res-minus" data-res="pv">−</button><div class="resource-values"><span class="res-current" id="pv-current">0</span><span class="res-sep">/</span><span class="res-max" id="pv-max">0</span></div><button type="button" class="res-btn res-plus" data-res="pv">+</button></div><div class="resource-note">Máx: <span id="pv-max-note">selecione especialização</span></div></div>
+          <div class="resource-card pe-card"><div class="resource-header"><span class="resource-label">Energia Amaldiçoada</span><span class="resource-tag">PE</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pe-fill" id="pe-fill" style="width:100%"></div></div></div><div class="resource-controls"><button type="button" class="res-btn res-minus" data-res="pe">−</button><div class="resource-values"><span class="res-current" id="pe-current">0</span><span class="res-sep">/</span><span class="res-max" id="pe-max">0</span></div><button type="button" class="res-btn res-plus" data-res="pe">+</button></div><div class="resource-note">Máx: <span id="pe-max-note">selecione especialização</span></div></div>
+          <div class="resource-card alma-card"><div class="resource-header"><span class="resource-label">Integridade da Alma</span><span class="resource-tag">IA</span></div><div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill alma-fill" id="alma-fill" style="width:100%"></div></div></div><div class="resource-controls"><button type="button" class="res-btn res-minus" data-res="alma">−</button><div class="resource-values"><span class="res-current" id="alma-current">0</span><span class="res-sep">/</span><span class="res-max" id="alma-max">0</span></div><button type="button" class="res-btn res-plus" data-res="alma">+</button></div><div class="resource-note">Igual ao máximo de PV</div></div>
         </div>
         <div class="combat-stats-grid">
           <div class="cs-card"><div class="cs-label">DEF</div><div class="cs-value" id="cs-defesa">10</div></div>
@@ -401,8 +401,16 @@
             <div class="form-group"><label class="form-label">Foto</label><input class="form-input" id="sk-img" type="file" accept="image/*" /></div>
             <div class="form-group span-2"><label class="form-label">Aparência</label><textarea class="form-textarea" id="sk-aparencia" placeholder="Como o Shikigami parece..." rows="2"></textarea></div>
             <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="sk-desc" placeholder="Informações gerais..." rows="2"></textarea></div>
-            <!-- Atributos -->
-            <div  class="form-label" style="grid-column: span 2; margin-top: 0.5rem;">Atributos</div>
+            <div class="form-group"><label class="form-label">Comportamento</label><select class="form-select" id="sk-comportamento"><option>Automático</option><option selected>Controlado pelo usuário</option><option>Agressivo</option><option>Defensivo</option><option>Suporte</option><option>Protetor</option><option>Independente</option></select></div>
+            <div class="form-group"><label class="form-label">Ação padrão</label><input class="form-input" id="sk-acao-padrao" type="text" value="Ação padrão" /></div>
+            <div class="form-group"><label class="form-label">Ação bônus</label><input class="form-input" id="sk-acao-bonus" type="text" value="Ação bônus" /></div>
+            <div class="form-group"><label class="form-label">Reação</label><input class="form-input" id="sk-reacao" type="text" value="Reação" /></div>
+            <div class="form-group"><label class="form-label">Movimento</label><input class="form-input" id="sk-movimento" type="text" value="9m" /></div>
+            <div class="form-group span-2"><label class="form-label">Resistências</label><input class="form-input" id="sk-resistencias" type="text" placeholder="Ex: Fogo, Impacto..." /></div>
+            <div class="form-group span-2"><label class="form-label">Imunidades</label><input class="form-input" id="sk-imunidades" type="text" placeholder="Ex: Venenos, Controle Mental..." /></div>
+            <div class="form-group span-2"><label class="form-label">Fraquezas</label><input class="form-input" id="sk-fraquezas" type="text" placeholder="Ex: Gelo, Luz..." /></div>
+            <div class="form-group span-2"><label class="form-label">Vulnerabilidades</label><input class="form-input" id="sk-vulnerabilidades" type="text" placeholder="Ex: Alma, Sangramento..." /></div>
+            <div class="form-label" style="grid-column: span 2; margin-top: 0.5rem;">Atributos</div>
             <div class="form-group"><label class="form-label">Força</label><input class="form-input sk-attr" id="sk-attr-forca" type="number" min="1" max="30" value="10" /></div>
             <div class="form-group"><label class="form-label">Destreza</label><input class="form-input sk-attr" id="sk-attr-destreza" type="number" min="1" max="30" value="10" /></div>
             <div class="form-group"><label class="form-label">Constituição</label><input class="form-input sk-attr" id="sk-attr-constituicao" type="number" min="1" max="30" value="10" /></div>
@@ -411,6 +419,25 @@
             <div class="form-group"><label class="form-label">Presença</label><input class="form-input sk-attr" id="sk-attr-presenca" type="number" min="1" max="30" value="10" /></div>
           </div>
           <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-shikigami">Adicionar</button><button class="btn-cancel" id="btn-cancel-shikigami">Cancelar</button></div>
+        </div>
+
+        <div class="item-form hidden" id="shikigami-ability-form">
+          <h4 class="item-form-title">Nova Habilidade do Shikigami</h4>
+          <div class="item-form-grid">
+            <div class="form-group span-2"><label class="form-label">Nome</label><input class="form-input" id="sa-nome" type="text" placeholder="Nome da habilidade..." /></div>
+            <div class="form-group"><label class="form-label">Categoria</label><select class="form-select" id="sa-categoria"><option>Ataque Básico</option><option>Ataques Secundários</option><option>Técnicas Amaldiçoadas</option><option>Passiva</option><option>Ativa</option><option>Reação</option><option>Ultimate/Expansão</option><option>Buff</option><option>Debuff</option></select></div>
+            <div class="form-group"><label class="form-label">Tipo de Dano</label><select class="form-select" id="sa-tipo-dano"><option>Cortante</option><option>Impacto</option><option>Perfurante</option><option>Energia Amaldiçoadora</option><option>Fogo</option><option>Gelo</option><option>Elétrico</option><option>Sangramento</option><option>Alma</option><option>Outro</option></select></div>
+            <div class="form-group"><label class="form-label">Tipo de Ação</label><select class="form-select" id="sa-acao-tipo"><option>Ação padrão</option><option>Ação bônus</option><option>Reação</option><option>Movimento</option></select></div>
+            <div class="form-group"><label class="form-label">Cálculo de Ataque</label><select class="form-select" id="sa-formula"><option>Corpo a Corpo</option><option>Ágil</option><option>Energético</option><option>Alma</option></select></div>
+            <div class="form-group"><label class="form-label">Alcance</label><input class="form-input" id="sa-alcance" type="text" placeholder="Ex: 1m, 9m, Toque..." /></div>
+            <div class="form-group"><label class="form-label">Dano</label><input class="form-input" id="sa-dano" type="text" placeholder="Ex: 2d8 + Mod..." /></div>
+            <div class="form-group"><label class="form-label">Custo de Energia</label><input class="form-input" id="sa-custo" type="number" min="0" value="0" /></div>
+            <div class="form-group"><label class="form-label">Cooldown</label><input class="form-input" id="sa-cooldown" type="number" min="0" value="0" /></div>
+            <div class="form-group"><label class="form-label">Área de Efeito</label><input class="form-input" id="sa-aoe" type="text" placeholder="Ex: Cone 3m, Linha 9m..." /></div>
+            <div class="form-group span-2"><label class="form-label">Condição de Uso</label><input class="form-input" id="sa-condicao" type="text" placeholder="Quando pode ser usada..." /></div>
+            <div class="form-group span-2"><label class="form-label">Descrição</label><textarea class="form-textarea" id="sa-desc" rows="2" placeholder="Explique o efeito da habilidade..."></textarea></div>
+          </div>
+          <div class="item-form-actions"><button class="btn-confirm" id="btn-confirm-shikigami-ability">Adicionar</button><button class="btn-cancel" id="btn-cancel-shikigami-ability">Cancelar</button></div>
         </div>
       </section>
 
@@ -534,9 +561,9 @@
             <div class="resource-header"><span class="resource-label">Pontos de Vida</span><span class="resource-tag">PV</span></div>
             <div class="resource-bar-wrap"><div class="resource-bar"><div class="resource-fill pv-fill" id="m-pv-fill" style="width:100%"></div></div></div>
             <div class="resource-controls">
-              <button class="res-btn res-minus" data-mres="m-pv">−</button>
+              <button type="button" class="res-btn res-minus" data-mres="m-pv">−</button>
               <div class="resource-values"><span class="res-current" id="m-pv-current">0</span><span class="res-sep">/</span><span class="res-max" id="m-pv-max">0</span></div>
-              <button class="res-btn res-plus" data-mres="m-pv">+</button>
+              <button type="button" class="res-btn res-plus" data-mres="m-pv">+</button>
             </div>
           </div>
         </div>
